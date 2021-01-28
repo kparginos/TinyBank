@@ -1,4 +1,4 @@
-﻿namespace TinyBank.Core.Model
+﻿namespace TinyBank.Core.Model.Types
 {
     public enum TransactionType
     {

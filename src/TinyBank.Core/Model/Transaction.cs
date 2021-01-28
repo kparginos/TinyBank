@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+
+using TinyBank.Core.Model.Types;
 
 namespace TinyBank.Core.Model
 {
