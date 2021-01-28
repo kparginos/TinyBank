@@ -41,8 +41,11 @@ namespace TinyBank.Core.Data
                 .HasIndex(c => c.CustBankID)
                 .IsUnique();
 
-            //modelBuilder.Entity<Accounts>()
-            //    .ToTable("Order");
+            modelBuilder.Entity<Accounts>()
+                .ToTable("Accounts");
+            modelBuilder.Entity<Accounts>()
+                .HasIndex(an => an.AccountNumber)
+                .IsUnique();
         }
     }
 }
