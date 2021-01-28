@@ -31,6 +31,7 @@ namespace TinyBank.Core.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Customer Table Entity
             modelBuilder.Entity<Customer>()
                 .ToTable("Customer");
 
@@ -41,11 +42,17 @@ namespace TinyBank.Core.Data
                 .HasIndex(c => c.CustBankID)
                 .IsUnique();
 
+            // Accounts Table Entity
             modelBuilder.Entity<Accounts>()
                 .ToTable("Accounts");
             modelBuilder.Entity<Accounts>()
                 .HasIndex(an => an.AccountNumber)
                 .IsUnique();
+
+            // Transaction Table Entity
+            modelBuilder.Entity<Transaction>()
+                .ToTable("Transaction");
+
         }
     }
 }
