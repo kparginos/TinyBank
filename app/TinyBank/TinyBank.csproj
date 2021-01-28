@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\TinyBank.Core\TinyBank.Core.csproj" />
+    <ProjectReference Include="..\..\src\TinyBank.Core\TinyBank.Core.csproj" />
   </ItemGroup>
 
 </Project>

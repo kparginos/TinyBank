@@ -2,6 +2,7 @@ using System.Linq;
 
 using TinyBank.Core.Data;
 using TinyBank.Core.Model;
+using TinyBank.Core.Model.Types;
 
 using Xunit;
 
