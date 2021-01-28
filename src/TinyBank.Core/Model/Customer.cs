@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TinyBank.Core.Model
 {
@@ -9,7 +10,7 @@ namespace TinyBank.Core.Model
         public string Name { get; set; }
         public string SureName { get; set; }
         public string VatNumber { get; set; }
-        //public List<Accounts> Orders { get; set; }
+        public List<Accounts> Accounts { get; set; }
         public bool Active { get; set; }
         public string Address { get; set; }
         public CustomerType CustType { get; set; }
@@ -17,6 +18,7 @@ namespace TinyBank.Core.Model
         public Customer()
         {
             Created = DateTime.Now;
+            Accounts = new List<Accounts>();
         }
     }
 }
