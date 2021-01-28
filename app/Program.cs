@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Reflection;
+
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
-using TinyBank.Core.Services.Extentions;
 using TinyBank.Core.Data;
 using TinyBank.Core.Config.Extentions;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +26,8 @@ namespace TinyBank
 
     // Use the following to create the migrations
     public class DbContextFactory : IDesignTimeDbContextFactory<TinyBankDBContext>
-    {  public TinyBankDBContext CreateDbContext(string[] args)
+    {  
+        public TinyBankDBContext CreateDbContext(string[] args)
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath($"{AppDomain.CurrentDomain.BaseDirectory}")
@@ -37,7 +38,7 @@ namespace TinyBank
             optionsBuilder.UseSqlServer(
                 config.ConnString,
                 options => {
-                    options.MigrationsAssembly("TinyBank");
+                    options.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name); // ("TinyBank");
                 });
 
             return new TinyBankDBContext(optionsBuilder.Options);
