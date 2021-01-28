@@ -8,7 +8,7 @@ namespace TinyBank.Core.Config.Extentions
             this IConfiguration @this)
         {
             //var minLoggingLevel = @this.GetSection("MinLoggingLevel").Value;
-            var connString = @this.GetSection("ConnectionStrings").GetSection("CrmDatabase").Value;
+            var connString = @this.GetSection("ConnectionStrings").GetSection("TinyBankDatabase").Value;
             //var clientID = @this.GetSection("ClientConfig")
             //    .GetSection("ClientId").Value;
             //var clientSecret = @this.GetSection("ClientConfig")
