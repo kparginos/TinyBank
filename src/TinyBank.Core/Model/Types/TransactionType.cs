@@ -3,7 +3,7 @@
     public enum TransactionType
     {
         Undefined = 0,
-        Credit = 1,
-        Debit = 2
+        Credit = -1,
+        Debit = 1
     }
 }
