@@ -28,12 +28,14 @@ namespace TinyBank.Core.Services.Extentions
             if (appConfig.Environment == "Production")
             {
                 //@this.AddScoped<ICustomerService, CustomerService>();
-                //@this.AddScoped<IOrderService, OrderService>();
+                //@this.AddScoped<IAccountsService, AccountsService>();
+                //@this.AddScoped<ITransactionService, TransactionService>();
             }
             else
             {
                 //@this.AddScoped<ICustomerService, DummyCustomerService>();
-                //@this.AddScoped<IOrderService, OrderService>();
+                //@this.AddScoped<IAccountsService, DummyAccountsService>();
+                //@this.AddScoped<ITransactionService, DummyTransactionService>();
             }
 
         }
