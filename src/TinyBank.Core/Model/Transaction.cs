@@ -11,6 +11,7 @@ namespace TinyBank.Core.Model
         public DateTime Created { get; private set; }
         public TransactionType Type { get; set; }
         public decimal Amount { get; set; }
+        public TransactionStateType State { get; set; } = TransactionStateType.Pending;
 
         public Transaction()
         {
