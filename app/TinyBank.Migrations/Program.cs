@@ -3,12 +3,12 @@ using System.Reflection;
 
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 using TinyBank.Core.Data;
 using TinyBank.Core.Config.Extentions;
-using Microsoft.EntityFrameworkCore;
 
-namespace TinyBank
+namespace TinyBank.Migrations
 {
     class Program
     {
