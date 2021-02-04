@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Linq;
 
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using TinyBank.Core.Config.Extentions;
+
 using TinyBank.Core.Data;
 using TinyBank.Core.Model;
 
@@ -13,7 +17,21 @@ namespace TinyBank.Core.Tests
         [Fact]
         public void Add_New_Account()
         {
-            using var dbcontext = new TinyBankDBContext();
+            var config = new ConfigurationBuilder()
+               .SetBasePath($"{AppDomain.CurrentDomain.BaseDirectory}")
+               .AddJsonFile("appsettings.json", false)
+               .Build();
+
+            var connString = config.ReadAppConfiguration();
+
+            var options = new DbContextOptionsBuilder<TinyBankDBContext>();
+            options.UseSqlServer(connString.ConnString,
+                options =>
+                {
+                    options.MigrationsAssembly("TinyBank");
+                });
+
+            using var dbContext = new TinyBankDBContext(options.Options);
 
             var account = new Accounts()
             {
@@ -24,16 +42,30 @@ namespace TinyBank.Core.Tests
                 Balance = 1500.0m
             };
 
-            dbcontext.Add(account);
-            dbcontext.SaveChanges();
+            dbContext.Add(account);
+            dbContext.SaveChanges();
         }
 
         [Fact]
         public void Add_New_Account_To_Customer()
         {
-            using var dbcontext = new TinyBankDBContext();
+            var config = new ConfigurationBuilder()
+               .SetBasePath($"{AppDomain.CurrentDomain.BaseDirectory}")
+               .AddJsonFile("appsettings.json", false)
+               .Build();
 
-            var savedCustomer = dbcontext.Set<Customer>()
+            var connString = config.ReadAppConfiguration();
+
+            var options = new DbContextOptionsBuilder<TinyBankDBContext>();
+            options.UseSqlServer(connString.ConnString,
+                options =>
+                {
+                    options.MigrationsAssembly("TinyBank");
+                });
+
+            using var dbContext = new TinyBankDBContext(options.Options);
+
+            var savedCustomer = dbContext.Set<Customer>()
                 .Where(c => c.CustBankID == "032846778")
                 .SingleOrDefault();
 
@@ -48,8 +80,8 @@ namespace TinyBank.Core.Tests
                 Balance = 1800.0m
             });
 
-            dbcontext.Update(savedCustomer);
-            dbcontext.SaveChanges();
+            dbContext.Update(savedCustomer);
+            dbContext.SaveChanges();
         }
     }
 }

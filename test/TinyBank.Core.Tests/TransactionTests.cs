@@ -1,5 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
+using TinyBank.Core.Config.Extentions;
 using TinyBank.Core.Data;
 using TinyBank.Core.Model;
 using TinyBank.Core.Model.Types;
@@ -13,15 +18,28 @@ namespace TinyBank.Core.Tests
         [Fact]
         public void Add_New_Transaction_To_Account()
         {
-            using var dbcontext = new TinyBankDBContext();
+            var config = new ConfigurationBuilder()
+               .SetBasePath($"{AppDomain.CurrentDomain.BaseDirectory}")
+               .AddJsonFile("appsettings.json", false)
+               .Build();
+            var connString = config.ReadAppConfiguration();
 
-            var savedCustomer = dbcontext.Set<Customer>()
+            var options = new DbContextOptionsBuilder<TinyBankDBContext>();
+            options.UseSqlServer(connString.ConnString,
+                options =>
+                {
+                    options.MigrationsAssembly("TinyBank");
+                });
+
+            using var dbContext = new TinyBankDBContext(options.Options);
+
+            var savedCustomer = dbContext.Set<Customer>()
                 .Where(c => c.CustBankID == "032846778")
                 .SingleOrDefault();
 
             Assert.NotNull(savedCustomer);
 
-            var savedAccount = dbcontext.Set<Accounts>()
+            var savedAccount = dbContext.Set<Accounts>()
                 .Where(a => a.AccountNumber == "1558642182")
                 .SingleOrDefault();
 
@@ -34,8 +52,8 @@ namespace TinyBank.Core.Tests
                 Type = TransactionType.Credit
             });
 
-            dbcontext.Update(savedAccount);
-            dbcontext.SaveChanges();
+            dbContext.Update(savedAccount);
+            dbContext.SaveChanges();
         }
     }
 }

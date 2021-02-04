@@ -1,8 +1,13 @@
+using System;
 using System.Linq;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 using TinyBank.Core.Data;
 using TinyBank.Core.Model;
 using TinyBank.Core.Model.Types;
+using TinyBank.Core.Config.Extentions;
 
 using Xunit;
 
@@ -13,7 +18,22 @@ namespace TinyBank.Core.Tests
         [Fact]
         public void Add_New_Customer()
         {
-            using var dbcontext = new TinyBankDBContext();
+            var config = new ConfigurationBuilder()
+               .SetBasePath($"{AppDomain.CurrentDomain.BaseDirectory}")
+               .AddJsonFile("appsettings.json", false)
+               .Build();
+
+
+            var connString = config.ReadAppConfiguration();
+
+            var options = new DbContextOptionsBuilder<TinyBankDBContext>();
+            options.UseSqlServer(connString.ConnString,
+                options =>
+                {
+                    options.MigrationsAssembly("TinyBank");
+                });
+
+            using var dbContext = new TinyBankDBContext(options.Options);
 
             var customer = new Customer()
             {
@@ -25,8 +45,32 @@ namespace TinyBank.Core.Tests
                 SureName = "Parginos",
                 VatNumber = "123456789"
             };
-            dbcontext.Add(customer);
-            dbcontext.SaveChanges();
+            dbContext.Add(customer);
+            dbContext.SaveChanges();
+        }
+
+        [Fact]
+        public void Get_Customer()
+        {
+            var config = new ConfigurationBuilder()
+               .SetBasePath($"{AppDomain.CurrentDomain.BaseDirectory}")
+               .AddJsonFile("appsettings.json", false)
+               .Build();
+
+            var connString = config.ReadAppConfiguration();
+
+            var options = new DbContextOptionsBuilder<TinyBankDBContext>();
+            options.UseSqlServer(connString.ConnString,
+                options =>
+                {
+                    options.MigrationsAssembly("TinyBank");
+                });
+
+            using var dbContext = new TinyBankDBContext(options.Options);
+
+            var customers = dbContext.Set<Customer>()
+                .Where(c => c.VatNumber == "123456789")
+                .ToList();
         }
     }
 }
