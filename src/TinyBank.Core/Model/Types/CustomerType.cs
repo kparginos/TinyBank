@@ -1,5 +1,8 @@
 ﻿namespace TinyBank.Core.Model.Types
 {
+    /// <summary>
+    ///     The customer types
+    /// </summary>
     public enum CustomerType
     {
         Undefined = 0,

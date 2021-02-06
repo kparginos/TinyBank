@@ -1,5 +1,8 @@
 ﻿namespace TinyBank.Core.Model.Types
 {
+    /// <summary>
+    ///     Used to specify the type of a transaction on an account
+    /// </summary>
     public enum TransactionType
     {
         Undefined = 0,
