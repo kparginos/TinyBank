@@ -4,6 +4,9 @@ using TinyBank.Core.Model.Types;
 
 namespace TinyBank.Core.Model
 {
+    /// <summary>
+    ///     Transaction Data Model
+    /// </summary>
     public class Transaction
     {
         public int TransactionId { get; set; }

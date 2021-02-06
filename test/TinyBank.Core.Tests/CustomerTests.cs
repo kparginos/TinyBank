@@ -1,19 +1,35 @@
+using System;
 using System.Linq;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 using TinyBank.Core.Data;
 using TinyBank.Core.Model;
 using TinyBank.Core.Model.Types;
+using TinyBank.Core.Config.Extentions;
 
 using Xunit;
+using TinyBank.Core.Services;
+using TinyBank.Core.Services.Options;
+using TinyBank.Core.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TinyBank.Core.Tests
 {
-    public class CustomerTests
+    public class CustomerTests : IClassFixture<TinyBankFixture>
     {
+        private ICustomerService _customer;
+
+        public CustomerTests(TinyBankFixture fixture)
+        {
+            _customer = fixture.Scope.ServiceProvider
+                .GetRequiredService<ICustomerService>();
+        }
         [Fact]
         public void Add_New_Customer()
         {
-            using var dbcontext = new TinyBankDBContext();
+            using var dbContext = new TinyBankDBContext(GetDBOptions().Options);
 
             var customer = new Customer()
             {
@@ -25,8 +41,75 @@ namespace TinyBank.Core.Tests
                 SureName = "Parginos",
                 VatNumber = "123456789"
             };
-            dbcontext.Add(customer);
-            dbcontext.SaveChanges();
+            dbContext.Add(customer);
+            dbContext.SaveChanges();
+        }
+
+        [Fact]
+        public void Add_New_Customer_With_Service()
+        {
+            using var dbContext = new TinyBankDBContext(GetDBOptions().Options);
+
+            var customerService = new CustomerService(dbContext);
+            var customer = customerService.Register(new RegisterCustomerOptions()
+            {
+                CustomerBankID="CUSTBNK0001",
+                Name = "Ioannis",
+                SureName = "Ioannopoulos",
+                VATNumber = "033456789",
+                CustType = CustomerType.Personal,
+                Address = "Cust Address 1"
+            });
+
+            Assert.NotNull(customer);
+        }
+
+        [Fact]
+        public void Add_New_Customer_With_DI()
+        {
+            var options = new RegisterCustomerOptions()
+            {
+                CustomerBankID = "CUSTBNK0209",
+                Name = "Iliana",
+                SureName = "Panagiotopoulou",
+                VATNumber = "076451289",
+                CustType = CustomerType.Personal,
+                Address = "Aigyptou 84"
+            };
+
+            var customer = _customer.Register(options);
+
+            Assert.NotNull(customer);
+        }
+
+        [Fact]
+        public void Get_Customer()
+        {
+            using var dbContext = new TinyBankDBContext(GetDBOptions().Options);
+
+            var customers = dbContext.Set<Customer>()
+                .Where(c => c.VatNumber == "123456789")
+                .ToList();
+        }
+
+        private DbContextOptionsBuilder<TinyBankDBContext> GetDBOptions()
+        {
+            var config = new ConfigurationBuilder()
+               .SetBasePath($"{AppDomain.CurrentDomain.BaseDirectory}")
+               .AddJsonFile("appsettings.json", false)
+               .Build();
+
+
+            var connString = config.ReadAppConfiguration();
+
+            var options = new DbContextOptionsBuilder<TinyBankDBContext>();
+            options.UseSqlServer(connString.ConnString,
+                options =>
+                {
+                    options.MigrationsAssembly("TinyBank");
+                });
+
+            return options;
         }
     }
 }

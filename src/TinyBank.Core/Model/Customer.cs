@@ -5,6 +5,9 @@ using TinyBank.Core.Model.Types;
 
 namespace TinyBank.Core.Model
 {
+    /// <summary>
+    ///     Customer Data Model
+    /// </summary>
     public class Customer
     {
         public int CustomerId { get; set; }
@@ -13,7 +16,7 @@ namespace TinyBank.Core.Model
         public string SureName { get; set; }
         public string VatNumber { get; set; }
         public List<Accounts> Accounts { get; set; }
-        public bool Active { get; set; }
+        public bool Active { get; set; } = true;
         public string Address { get; set; }
         public CustomerType CustType { get; set; }
         public DateTime Created { get; private set; }
