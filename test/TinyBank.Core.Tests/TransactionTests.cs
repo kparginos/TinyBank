@@ -3,18 +3,29 @@ using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.Extensions.DependencyInjection;
 using TinyBank.Core.Config.Extentions;
 using TinyBank.Core.Data;
 using TinyBank.Core.Model;
 using TinyBank.Core.Model.Types;
-
+using TinyBank.Core.Services.Interfaces;
+using TinyBank.Core.Services.Options;
 using Xunit;
 
 namespace TinyBank.Core.Tests
 {
-    public class TransactionTests
+    public class TransactionTests : IClassFixture<TinyBankFixture>
     {
+        private ITransactionService _transaction;
+        private IAccountsService _account;
+
+        public TransactionTests(TinyBankFixture fixture)
+        {
+            _transaction = fixture.Scope.ServiceProvider
+                .GetRequiredService<ITransactionService>();
+            _account = fixture.Scope.ServiceProvider
+                .GetRequiredService<IAccountsService>();
+        }
         [Fact]
         public void Add_New_Transaction_To_Account()
         {
@@ -54,6 +65,21 @@ namespace TinyBank.Core.Tests
 
             dbContext.Update(savedAccount);
             dbContext.SaveChanges();
+        }
+
+        [Fact]
+        public void Add_New_Transaction_With_DI()
+        {
+            var options = new RegisterTransactionOptions()
+            {
+                Amount = 1500.0m,
+                TransDescr = "Salary Payment",
+                Type = TransactionType.Debit
+            };
+
+            var transaction = _transaction.Register(5, options);
+
+            Assert.NotNull(transaction);
         }
     }
 }
