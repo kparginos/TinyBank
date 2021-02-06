@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyBank.Core.Tests", "test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyBank.Migrations", "app\TinyBank.Migrations\TinyBank.Migrations.csproj", "{78E9C56A-3327-4594-B2FD-F503133441BF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyBank.ConsoleApp", "app\TinyBank.ConsoleApp\TinyBank.ConsoleApp.csproj", "{8BA7705B-E218-43BD-BF14-9793DF4D2B94}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{78E9C56A-3327-4594-B2FD-F503133441BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78E9C56A-3327-4594-B2FD-F503133441BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78E9C56A-3327-4594-B2FD-F503133441BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BA7705B-E218-43BD-BF14-9793DF4D2B94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BA7705B-E218-43BD-BF14-9793DF4D2B94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BA7705B-E218-43BD-BF14-9793DF4D2B94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BA7705B-E218-43BD-BF14-9793DF4D2B94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +47,7 @@ Global
 		{55FD52EF-09B7-4297-973D-FCEDF710DEB9} = {90A92367-5174-4C66-B051-C68AEF53340D}
 		{43E46ED5-1E30-443C-ACAD-942544381514} = {7EBAD48E-D2F5-4339-8AA2-5B9279C16AE3}
 		{78E9C56A-3327-4594-B2FD-F503133441BF} = {D3EAC575-77CF-4F8D-9210-D8F39D5167D6}
+		{8BA7705B-E218-43BD-BF14-9793DF4D2B94} = {D3EAC575-77CF-4F8D-9210-D8F39D5167D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E17FFF89-4D0B-4AFD-A06D-8BE450848E64}
