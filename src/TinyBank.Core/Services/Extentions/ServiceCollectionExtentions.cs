@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TinyBank.Core.Config;
 using TinyBank.Core.Config.Extentions;
 using TinyBank.Core.Data;
+using TinyBank.Core.Services.Interfaces;
 
 namespace TinyBank.Core.Services.Extentions
 {
@@ -27,15 +28,15 @@ namespace TinyBank.Core.Services.Extentions
             var appConfig = config.ReadAppConfiguration();
             if (appConfig.Environment == "Production")
             {
-                //@this.AddScoped<ICustomerService, CustomerService>();
-                //@this.AddScoped<IAccountsService, AccountsService>();
-                //@this.AddScoped<ITransactionService, TransactionService>();
+                @this.AddScoped<ICustomerService, CustomerService>();
+                @this.AddScoped<IAccountsService, AccountsService>();
+                @this.AddScoped<ITransactionService, TransactionService>();
             }
             else
             {
-                //@this.AddScoped<ICustomerService, DummyCustomerService>();
-                //@this.AddScoped<IAccountsService, DummyAccountsService>();
-                //@this.AddScoped<ITransactionService, DummyTransactionService>();
+                @this.AddScoped<ICustomerService, CustomerService>();
+                @this.AddScoped<IAccountsService, AccountsService>();
+                @this.AddScoped<ITransactionService, TransactionService>();
             }
 
         }
