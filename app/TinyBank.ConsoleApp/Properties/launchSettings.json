@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TinyBank.ConsoleApp": {
+      "commandName": "Project",
+      "commandLineArgs": "-c -a 1007"
+    }
+  }
+}
