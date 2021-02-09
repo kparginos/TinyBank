@@ -7,5 +7,6 @@ namespace TinyBank.Core.Services.Interfaces
     {
         public Accounts Register(int customerID, RegisterAccountOptions options);
         public Accounts GetAccountbyID(int accountID);
+        public Accounts GetAccountbyCustomerID(int customerID, int accountID);
     }
 }
