@@ -1,4 +1,6 @@
-﻿using TinyBank.Core.Model;
+﻿using System.Collections.Generic;
+
+using TinyBank.Core.Model;
 using TinyBank.Core.Services.Options;
 
 namespace TinyBank.Core.Services.Interfaces

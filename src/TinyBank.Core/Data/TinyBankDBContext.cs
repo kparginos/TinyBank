@@ -1,10 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using TinyBank.Core.Model;
 
 namespace TinyBank.Core.Data
 {
     public class TinyBankDBContext : DbContext
-    {        
+    {
+        public DbSet<Customer> Customer { get; private set; }
+        public DbSet<Accounts> Accounts { get; private set; }
+
         public TinyBankDBContext(DbContextOptions<TinyBankDBContext> options) : base(options)
         {
 

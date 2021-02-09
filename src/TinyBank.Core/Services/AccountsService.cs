@@ -53,5 +53,16 @@ namespace TinyBank.Core.Services
 
             return account;
         }
+
+        public Accounts GetAccountbyCustomerID(int customerID, int accountID)
+        {
+            var customer = _customer.GetCustomerbyID(customerID);
+
+            var account = customer.Accounts.ToList()
+                .Where(a => a.AccountsId == accountID)
+                .SingleOrDefault();
+
+            return account;
+        }
     }
 }
