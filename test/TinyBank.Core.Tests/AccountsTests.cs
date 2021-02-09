@@ -8,9 +8,9 @@ using TinyBank.Core.Config.Extentions;
 
 using TinyBank.Core.Data;
 using TinyBank.Core.Model;
-using TinyBank.Core.Services;
 using TinyBank.Core.Services.Interfaces;
 using TinyBank.Core.Services.Options;
+
 using Xunit;
 
 namespace TinyBank.Core.Tests

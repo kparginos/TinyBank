@@ -1,4 +1,7 @@
 ﻿using System.Linq;
+
+using Microsoft.EntityFrameworkCore;
+
 using TinyBank.Core.Data;
 using TinyBank.Core.Model;
 using TinyBank.Core.Services.Interfaces;
@@ -47,9 +50,12 @@ namespace TinyBank.Core.Services
 
         public Customer GetCustomerbyID(int customerID)
         {
-            return _dbContext.Set<Customer>()
+            var customer = _dbContext.Customer
                 .Where(c => c.CustomerId == customerID)
+                .Include(c => c.Accounts)
                 .SingleOrDefault();
+
+            return customer;
         }
     }
 }
