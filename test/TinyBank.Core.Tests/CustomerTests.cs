@@ -14,6 +14,7 @@ using TinyBank.Core.Services;
 using TinyBank.Core.Services.Options;
 using TinyBank.Core.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using TinyBank.Core.Consts;
 
 namespace TinyBank.Core.Tests
 {
@@ -80,6 +81,47 @@ namespace TinyBank.Core.Tests
             var customer = _customer.Register(options);
 
             Assert.NotNull(customer);
+        }
+
+        [Fact]
+        public async void Add_New_Customer_Success_with_Async()
+        {
+            var options = new RegisterCustomerOptions()
+            {
+                CustomerBankID = "CUSTBNK0219",
+                Name = "Melitini",
+                SureName = "Parginou",
+                VATNumber = "186493164",
+                CustType = CustomerType.Personal,
+                Address = "Aigyptou 84"
+            };
+
+            var result = await _customer.RegisterAsync(options);
+            Assert.Equal(ResultCodes.Success, result.Code);
+        }
+
+        [Fact]
+        public async void Update_Customer_Success_with_Async()
+        {
+            var options = new RegisterCustomerOptions()
+            {
+                CustomerBankID = "CUSTBNK0219",
+                Name = "Melitini",
+                SureName = "Parginou",
+                VATNumber = "186493164",
+                CustType = CustomerType.Personal,
+                Address = "Aigyptou 84 - Glyfada"
+            };
+
+            var result = await _customer.UpdateCustomerAsync(2007, options);
+            Assert.Equal(ResultCodes.Success, result.Code);
+        }
+
+        [Fact]
+        public async void Delete_Customer_Success_with_Async()
+        {
+            var result = await _customer.DeleteCustomerAsync(2007);
+            Assert.Equal(ResultCodes.Success, result.Code);
         }
 
         [Fact]

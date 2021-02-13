@@ -5,9 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TinyBank.Core.Config.Extentions;
-
+using TinyBank.Core.Consts;
 using TinyBank.Core.Data;
 using TinyBank.Core.Model;
+using TinyBank.Core.Model.Types;
 using TinyBank.Core.Services.Interfaces;
 using TinyBank.Core.Services.Options;
 
@@ -35,7 +36,7 @@ namespace TinyBank.Core.Tests
 
             var account = new Accounts()
             {
-                Active = true,
+                State = AccountStateTypes.Active,
                 AccountDescription = "My Personal Account",
                 AccountNumber = "1558642182",
                 Currency = "EUR",
@@ -73,7 +74,7 @@ namespace TinyBank.Core.Tests
 
             savedCustomer.Accounts.Add(new Accounts()
             {
-                Active = true,
+                State = AccountStateTypes.Active,
                 AccountDescription = "My Personal Account",
                 AccountNumber = "1558642123",
                 Currency = "EUR",
@@ -112,6 +113,15 @@ namespace TinyBank.Core.Tests
             var account = _account.Register(1006, options);
 
             Assert.NotNull(account);
+        }
+
+        [Fact]
+        public async void Set_Account_State_Success_with_Async()
+        {
+            var result = await _account.SetStateAsync(3, AccountStateTypes.Active);
+
+            Assert.Equal(ResultCodes.Success, result.Code);
+
         }
 
         private DbContextOptionsBuilder<TinyBankDBContext> GetDBOptions()
