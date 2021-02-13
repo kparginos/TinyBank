@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
+using System.Threading.Tasks;
 using TinyBank.Core.Services.Interfaces;
 using TinyBank.Core.Services.Options;
 
@@ -24,26 +24,26 @@ namespace TinyBank.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(
+        public async Task<IActionResult> Register(
             [FromBody] RegisterCustomerOptions options)
         {
-            var customer = _customer.Register(options);
+            var customer = await _customer.RegisterAsync(options);
 
             return Json(customer);
         }
 
         [HttpGet("{customerID:int}")]
-        public IActionResult GetCustomerbyID(int customerID)
+        public async Task<IActionResult> GetCustomerbyID(int customerID)
         {
-            var customer = _customer.GetCustomerbyID(customerID);
+            var customer = await _customer.GetCustomerbyIDAsync(customerID);
 
             return Json(customer);
         }
 
-        [HttpGet("{customerID:int}/{accountID:int}")]
-        public IActionResult GetCustomerAccount(int customerID, int accountID)
+        [HttpGet("{customerID:int}/account/{accountID:int}")]
+        public async Task<IActionResult> GetCustomerAccount(int customerID, int accountID)
         {
-            var account = _account.GetAccountbyCustomerID(customerID, accountID);
+            var account = await _account.GetAccountbyCustomerIDAsync(customerID, accountID);
 
             return Json(account);
         }
