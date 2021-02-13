@@ -2,6 +2,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TinyBank.Core.Consts;
 using TinyBank.Core.Model.Types;
 using TinyBank.Core.Services.Extentions;
 using TinyBank.Core.Services.Interfaces;
@@ -65,9 +66,10 @@ namespace TinyBank.ConsoleApp
                         _account.Register(int.Parse(args[2].Split(',')[3]), options);
                         break;
                     case "-q":
-                        var account = _account.GetAccountbyID(int.Parse(args[2]));
-                        if (account != null)
+                        var result = _account.GetAccountbyID(int.Parse(args[2]));
+                        if (result.Code == ResultCodes.Success)
                         {
+                            var account = result.Data;
                             Console.WriteLine(
                                 $"Account ID: {account.AccountsId}\n" +
                                 $"Account Number: {account.AccountNumber}\n" +
@@ -75,7 +77,7 @@ namespace TinyBank.ConsoleApp
                                 $"Account Balance: {account.Balance}\n" +
                                 $"Account Currency: {account.Currency}\n" +
                                 $"Created On: {account.Created}\n" +
-                                $"Account Active: {account.Active}");
+                                $"Account Active: {account.State}");
                         }
                         else
                         {
@@ -110,9 +112,10 @@ namespace TinyBank.ConsoleApp
                         _customer.Register(options);
                         break;
                     case "-q":
-                        var cust = _customer.GetCustomerbyID(int.Parse(args[2]));
-                        if (cust != null)
+                        var result = _customer.GetCustomerbyID(int.Parse(args[2]));
+                        if (result.Code == ResultCodes.Success)
                         {
+                            var cust = result.Data;
                             Console.WriteLine(
                                 $"Customer ID: {cust.CustomerId}\n" +
                                 $"Customer Name: {cust.Name}\n" +
