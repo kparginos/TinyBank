@@ -1,12 +1,19 @@
-﻿using TinyBank.Core.Model;
+﻿using System.Threading.Tasks;
+using TinyBank.Core.Model;
+using TinyBank.Core.Model.Types;
 using TinyBank.Core.Services.Options;
 
 namespace TinyBank.Core.Services.Interfaces
 {
     public interface IAccountsService
     {
-        public Accounts Register(int customerID, RegisterAccountOptions options);
-        public Accounts GetAccountbyID(int accountID);
-        public Accounts GetAccountbyCustomerID(int customerID, int accountID);
+        public Result<Accounts> Register(int customerID, RegisterAccountOptions options);
+        public Task<Result<Accounts>> RegisterAsync(int customerID, RegisterAccountOptions options);
+        public Result<Accounts> SetState(int accountID, AccountStateTypes state);
+        public Task<Result<Accounts>> SetStateAsync(int accountID, AccountStateTypes state);
+        public Result<Accounts> GetAccountbyID(int accountID);
+        public Task<Result<Accounts>> GetAccountbyIDAsync(int accountID);
+        public Result<Accounts> GetAccountbyCustomerID(int customerID, int accountID);
+        public Task<Result<Accounts>> GetAccountbyCustomerIDAsync(int customerID, int accountID);
     }
 }
