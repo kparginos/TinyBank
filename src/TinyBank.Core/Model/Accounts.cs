@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TinyBank.Core.Model.Types;
 
 namespace TinyBank.Core.Model
 {
@@ -14,7 +15,7 @@ namespace TinyBank.Core.Model
         public string Currency { get; set; }
         public decimal Balance { get; set; } = 0;
         public DateTime Created { get; private set; }
-        public bool Active { get; set; } = true;
+        public AccountStateTypes State { get; set; } = AccountStateTypes.Inactive;
         public List<Transaction> Transactions { get; set; }
 
         public Accounts()
