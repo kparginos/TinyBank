@@ -7,6 +7,7 @@ using TinyBank.Core.Model;
 using TinyBank.Core.Model.Types;
 using TinyBank.Core.Services.Interfaces;
 using TinyBank.Core.Services.Options;
+using TinyBank.Core.Services.Results;
 
 namespace TinyBank.Core.Services
 {
