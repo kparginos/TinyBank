@@ -13,7 +13,11 @@ namespace TinyBank.Core.Services.Interfaces
         public Task<Result<bool>> DeleteCustomerAsync(int customerID);
         public Result<Customer> UpdateCustomer(int customerID, RegisterCustomerOptions options);
         public Task<Result<Customer>> UpdateCustomerAsync(int customerID, RegisterCustomerOptions options);
+        public Result<Customer> SetState(int customerID, bool state);
+        public Task<Result<Customer>> SetStateAsync(int customerID, bool state);
         public Result<Customer> GetCustomerbyID(int customerID);
         public Task<Result<Customer>> GetCustomerbyIDAsync(int customerID);
+        public ResultList<CustomerAccounts_V> GetCustomerAccounts(int customerID);
+        public Task<ResultList<CustomerAccounts_V>> GetCustomerAccountsAsync(int customerID);
     }
 }
