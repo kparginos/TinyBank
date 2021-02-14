@@ -2,6 +2,7 @@
 
 using TinyBank.Core.Model;
 using TinyBank.Core.Services.Options;
+using TinyBank.Core.Services.Results;
 
 namespace TinyBank.Core.Services.Interfaces
 {
