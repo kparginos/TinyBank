@@ -47,5 +47,22 @@ namespace TinyBank.Api.Controllers
 
             return Json(account);
         }
+
+        [HttpGet("getcustomeraccounts/{customerID:int}")]
+        public async Task<IActionResult> GetCustomerAccounts(int customerID)
+        {
+            var result = await _customer.GetCustomerAccountsAsync(customerID);
+
+            return Json(result);
+        }
+
+        [HttpGet("{customerID:int}/state/{state:bool}")]
+        public async Task<IActionResult> SetCustomerState(int customerID, bool state)
+        {
+            var result = await _customer.SetStateAsync(customerID, state);
+
+            return Json(result);
+        }
+
     }
 }
