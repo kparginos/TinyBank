@@ -21,11 +21,15 @@ namespace TinyBank.Core.Tests
     public class CustomerTests : IClassFixture<TinyBankFixture>
     {
         private ICustomerService _customer;
+        private IFileParser _fileParser;
 
         public CustomerTests(TinyBankFixture fixture)
         {
             _customer = fixture.Scope.ServiceProvider
                 .GetRequiredService<ICustomerService>();
+
+            _fileParser = fixture.Scope.ServiceProvider
+                .GetRequiredService<IFileParser>();
         }
         [Fact]
         public void Add_New_Customer()
@@ -132,6 +136,17 @@ namespace TinyBank.Core.Tests
             var customers = dbContext.Set<Customer>()
                 .Where(c => c.VatNumber == "123456789")
                 .ToList();
+        }
+
+        [Fact]
+        public void Load_CustomerFile_Success()
+        {
+            var result = _fileParser.LoadCustFile(@"files\Book1.xlsx");
+
+            Assert.Equal(ResultCodes.Success, result.Code);
+            Assert.NotNull(result.Data);
+            Assert.Equal(3, result.Data.Count);
+            Assert.Equal(15873.92m, result.Data[2].TotalGross);
         }
 
         private DbContextOptionsBuilder<TinyBankDBContext> GetDBOptions()
