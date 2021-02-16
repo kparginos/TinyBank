@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyBank.Migrations", "app\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyBank.ConsoleApp", "app\TinyBank.ConsoleApp\TinyBank.ConsoleApp.csproj", "{8BA7705B-E218-43BD-BF14-9793DF4D2B94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyBank.Api", "app\TinyBank.API\TinyBank.Api.csproj", "{D06D2512-633C-4B4C-BC17-9D7D02D89615}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyBank.API", "app\TinyBank.API\TinyBank.API.csproj", "{D06D2512-633C-4B4C-BC17-9D7D02D89615}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
