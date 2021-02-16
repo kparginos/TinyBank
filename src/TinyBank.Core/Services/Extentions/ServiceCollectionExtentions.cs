@@ -31,12 +31,14 @@ namespace TinyBank.Core.Services.Extentions
                 @this.AddScoped<ICustomerService, CustomerService>();
                 @this.AddScoped<IAccountsService, AccountsService>();
                 @this.AddScoped<ITransactionService, TransactionService>();
+                @this.AddScoped<IFileParser, CustomerFileService>();
             }
             else
             {
                 @this.AddScoped<ICustomerService, CustomerService>();
                 @this.AddScoped<IAccountsService, AccountsService>();
                 @this.AddScoped<ITransactionService, TransactionService>();
+                @this.AddScoped<IFileParser, CustomerFileService>();
             }
 
         }
