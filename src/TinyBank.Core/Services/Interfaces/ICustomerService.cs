@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using TinyBank.Core.Model;
 using TinyBank.Core.Services.Options;
@@ -16,6 +17,8 @@ namespace TinyBank.Core.Services.Interfaces
         public Task<Result<Customer>> UpdateCustomerAsync(int customerID, RegisterCustomerOptions options);
         public Result<Customer> SetState(int customerID, bool state);
         public Task<Result<Customer>> SetStateAsync(int customerID, bool state);
+        public Result<List<Customer>> GetAllCustomers();
+        public Task<Result<List<Customer>>> GetAllCustomersAsync();
         public Result<Customer> GetCustomerbyID(int customerID);
         public Task<Result<Customer>> GetCustomerbyIDAsync(int customerID);
         public ResultList<CustomerAccounts_V> GetCustomerAccounts(int customerID);

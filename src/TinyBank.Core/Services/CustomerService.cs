@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -414,6 +415,52 @@ namespace TinyBank.Core.Services
                 {
                     Code = ResultCodes.NotFound,
                     Message = $"Customer ID {customerID} not found"
+                };
+            }
+        }
+
+        public Result<List<Customer>> GetAllCustomers()
+        {
+            var customers = _dbContext.Customer
+                .ToList();
+
+            if (customers != null)
+            {
+                return new Result<List<Customer>>()
+                {
+                    Code = ResultCodes.Success,
+                    Data = customers
+                };
+            }
+            else
+            {
+                return new Result<List<Customer>>()
+                {
+                    Code = ResultCodes.NotFound,
+                    Message = $"Customers found {customers.Count}"
+                };
+            }
+        }
+
+        public async Task<Result<List<Customer>>> GetAllCustomersAsync()
+        {
+            var customers = await _dbContext.Customer
+                .ToListAsync();
+
+            if (customers != null)
+            {
+                return new Result<List<Customer>>()
+                {
+                    Code = ResultCodes.Success,
+                    Data = customers
+                };
+            }
+            else
+            {
+                return new Result<List<Customer>>()
+                {
+                    Code = ResultCodes.NotFound,
+                    Message = $"Customers found {customers.Count}"
                 };
             }
         }

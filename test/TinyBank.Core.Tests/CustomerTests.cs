@@ -160,6 +160,17 @@ namespace TinyBank.Core.Tests
             Assert.True(result.Data);
         }
 
+        [Fact]
+        public void ExportCustomerAccountToFile_Success()
+        {
+            var result = _fileParser.ExportCustomerAccountsToFile(
+                exportPath: Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"files\CustomerAccounts.xlsx"),
+                customerID: 1006);
+
+            Assert.Equal(ResultCodes.Success, result.Code);
+            Assert.True(result.Data);
+        }
+
         private DbContextOptionsBuilder<TinyBankDBContext> GetDBOptions()
         {
             var config = new ConfigurationBuilder()

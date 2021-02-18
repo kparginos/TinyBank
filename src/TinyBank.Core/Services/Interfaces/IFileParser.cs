@@ -10,5 +10,7 @@ namespace TinyBank.Core.Services.Interfaces
         public Result<List<CustomerFile>> LoadCustFile(string path);
 
         public Result<bool> ExportCustomersToFile(string exportPath);
+
+        public Result<bool> ExportCustomerAccountsToFile(string exportPath, int customerID);
     }
 }

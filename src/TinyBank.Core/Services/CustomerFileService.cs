@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 
 using Npoi.Mapper;
 
@@ -9,21 +10,33 @@ using TinyBank.Core.Model;
 using TinyBank.Core.Services.Interfaces;
 using TinyBank.Core.Services.Results;
 using TinyBank.Core.Consts;
-using System.Globalization;
 using TinyBank.Core.Data;
 
 namespace TinyBank.Core.Services
 {
     public class CustomerFileService : IFileParser
     {
-        private readonly TinyBankDBContext _dbContext;
+        //private readonly TinyBankDBContext _dbContext;
+        private readonly ICustomerService _customer;
 
-        public CustomerFileService(TinyBankDBContext dbContext)
+        public CustomerFileService(/*TinyBankDBContext dbContext,*/
+            ICustomerService customer)
         {
-            _dbContext = dbContext;
+            //_dbContext = dbContext;
+            _customer = customer;
         }
-        public Result<bool> ExportCustomersToFile(string exportPath)
+        public Result<bool> ExportCustomerAccountsToFile(string exportPath, int customerID)
         {
+            if (string.IsNullOrWhiteSpace(exportPath))
+            {
+                return new Result<bool>()
+                {
+                    Code = ResultCodes.BadRequest,
+                    Message = $"File {exportPath} is empty or null !",
+                    Data = false
+                };
+            }
+
             if (File.Exists(exportPath))
             {
                 return new Result<bool>()
@@ -35,20 +48,68 @@ namespace TinyBank.Core.Services
             }
             else
             {
-                var result = _dbContext.Customer
-                    .ToList();
+                var customerResult = _customer.GetCustomerAccounts(customerID);
+
+                if(customerResult.Code == ResultCodes.Success)
+                {
+                    var mapper = new Mapper();
+
+                    mapper.Save<CustomerAccounts_V>(exportPath, customerResult.Data, "Customer Accounts");
+
+                    return new Result<bool>()
+                    {
+                        Code = ResultCodes.Success,
+                        Message = $"{customerResult.Data.Count} row(s) saved",
+                        Data = true
+                    };
+                }
+                else
+                {
+                    return new Result<bool>()
+                    {
+                        Code = customerResult.Code,
+                        Message = customerResult.Message,
+                        Data = false
+                    };
+                }
+            }
+        }
+        public Result<bool> ExportCustomersToFile(string exportPath)
+        {
+            if(string.IsNullOrWhiteSpace(exportPath))
+            {
+                return new Result<bool>()
+                {
+                    Code = ResultCodes.BadRequest,
+                    Message = $"File {exportPath} is empty or null !",
+                    Data = false
+                };
+            }
+
+            if (File.Exists(exportPath))
+            {
+                return new Result<bool>()
+                {
+                    Code = ResultCodes.BadRequest,
+                    Message = $"File {exportPath} already exists !",
+                    Data = false
+                };
+            }
+            else
+            {
+                var result = _customer.GetAllCustomers();
 
                 if(result != null)
                 {
                     var mapper = new Mapper();
 
                     mapper.Format<Customer>("dd/MM/yyyy hh:mm:ss.00", d => d.Created);
-                    mapper.Save<Customer>(exportPath, result, "Customer Data");
+                    mapper.Save<Customer>(exportPath, result.Data, "Customer Data");
 
                     return new Result<bool>()
                     {
                         Code = ResultCodes.Success,
-                        Message = $"{result.Count} row(s) found",
+                        Message = $"{result.Data.Count} row(s) found",
                         Data = true
                     };
                 }

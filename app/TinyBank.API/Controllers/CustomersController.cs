@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using TinyBank.Core.Consts;
 using TinyBank.Core.Services.Interfaces;
 using TinyBank.Core.Services.Options;
 
@@ -67,13 +71,24 @@ namespace TinyBank.Api.Controllers
             return Json(result);
         }
 
-        [Route("ExportCustomerData")]
-        [HttpPost]
+        //[Route("ExportCustomerData")]
+        //[HttpPost]
+        [HttpGet("ExportCustomerData")]
         public IActionResult ExportCustomerData()
         {
-            var result = _fileParser.ExportCustomersToFile(@"files\CustomerData.xlsx");
+            var result = _fileParser.ExportCustomersToFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"files\CustomerData.xlsx"));
 
             return Json(result);
+        }
+
+        [HttpGet("ExportCustomerAccounts/{customerID:int}")]
+        public IActionResult ExportCustomerAccounts(int customerID)
+        {
+            var result = _fileParser.ExportCustomerAccountsToFile(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"files\CustomerAccountsData.xlsx"),
+                customerID);
+
+            return Json(result);            
         }
 
     }
