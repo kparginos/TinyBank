@@ -1,5 +1,4 @@
-﻿
-namespace TinyBank.Core
+﻿namespace TinyBank.Core.Services.Results
 {
     public class Result<T>
     {

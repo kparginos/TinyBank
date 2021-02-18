@@ -3,11 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+
 using TinyBank.Core.Consts;
 using TinyBank.Core.Data;
 using TinyBank.Core.Model;
 using TinyBank.Core.Services.Interfaces;
 using TinyBank.Core.Services.Options;
+using TinyBank.Core.Services.Results;
 
 namespace TinyBank.Core.Services
 {
@@ -254,6 +256,64 @@ namespace TinyBank.Core.Services
                 };
             }
         }
+
+        public Result<Customer> SetState(int customerID, bool state)
+        {
+            var result = GetCustomerbyID(customerID);
+
+            if(result.Code == ResultCodes.Success)
+            {
+                var customer = result.Data;
+
+                customer.Active = state;
+                _dbContext.Update(customer);
+                _dbContext.SaveChanges();
+
+                return new Result<Customer>()
+                {
+                    Code = result.Code,
+                    Message = $"Status for Customer ID {customerID} updated to {state}",
+                    Data = customer
+                };
+            }
+            else
+            {
+                return new Result<Customer>()
+                {
+                    Code = result.Code,
+                    Message = result.Message
+                };
+            }
+        }
+
+        public async Task<Result<Customer>> SetStateAsync(int customerID, bool state)
+        {
+            var result = await GetCustomerbyIDAsync(customerID);
+
+            if (result.Code == ResultCodes.Success)
+            {
+                var customer = result.Data;
+
+                customer.Active = state;
+                _dbContext.Update(customer);
+                await _dbContext.SaveChangesAsync();
+
+                return new Result<Customer>()
+                {
+                    Code = result.Code,
+                    Message = $"Status for Customer ID {customerID} updated to {state}",
+                    Data = customer
+                };
+            }
+            else
+            {
+                return new Result<Customer>()
+                {
+                    Code = result.Code,
+                    Message = result.Message
+                };
+            }
+        }
         #endregion
 
         #region Customer Info Operations
@@ -294,6 +354,7 @@ namespace TinyBank.Core.Services
                 return new Result<Customer>()
                 {
                     Code = ResultCodes.Success,
+                    Message = $"Customer information found",
                     Data = customer
                 };
             }
@@ -303,6 +364,56 @@ namespace TinyBank.Core.Services
                 {
                     Code = ResultCodes.NotFound,
                     Message = $"Customer ID {customerID} not found !"
+                };
+            }
+        }
+
+        public ResultList<CustomerAccounts_V> GetCustomerAccounts(int customerID)
+        {
+            var customerInfoResult = _dbContext.CustomerAccountsView
+                .Where(c => c.CustomerId == customerID)
+                .ToList();
+
+            if(customerInfoResult != null)
+            {
+                return new ResultList<CustomerAccounts_V>()
+                {
+                    Code = ResultCodes.Success,
+                    Message = $"Found {customerInfoResult.Count} row(s)",
+                    Data = customerInfoResult
+                };
+            }
+            else
+            {
+                return new ResultList<CustomerAccounts_V>()
+                {
+                    Code = ResultCodes.NotFound,
+                    Message = $"Customer ID {customerID} not found"
+                };
+            }
+        }
+
+        public async Task<ResultList<CustomerAccounts_V>> GetCustomerAccountsAsync(int customerID)
+        {
+            var customerInfoResult = await _dbContext.CustomerAccountsView
+                .Where(c => c.CustomerId == customerID)
+                .ToListAsync();
+
+            if (customerInfoResult != null)
+            {
+                return new ResultList<CustomerAccounts_V>()
+                {
+                    Code = ResultCodes.Success,
+                    Message = $"Found {customerInfoResult.Count} row(s)",
+                    Data = customerInfoResult
+                };
+            }
+            else
+            {
+                return new ResultList<CustomerAccounts_V>()
+                {
+                    Code = ResultCodes.NotFound,
+                    Message = $"Customer ID {customerID} not found"
                 };
             }
         }

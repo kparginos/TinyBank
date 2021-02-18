@@ -8,6 +8,7 @@ namespace TinyBank.Core.Data
     {
         public DbSet<Customer> Customer { get; private set; }
         public DbSet<Accounts> Accounts { get; private set; }
+        public DbSet<CustomerAccounts_V> CustomerAccountsView { get; private set; }
 
         public TinyBankDBContext(DbContextOptions<TinyBankDBContext> options) : base(options)
         {
@@ -21,6 +22,11 @@ namespace TinyBank.Core.Data
             // Customer Table Entity
             modelBuilder.Entity<Customer>()
                 .ToTable("Customer");
+
+            // CustomerAccounts_V View Entity
+            modelBuilder.Entity<CustomerAccounts_V>()
+                .ToView("CustomerAccounts_V")
+                .HasNoKey();
 
             modelBuilder.Entity<Customer>()
                 .HasIndex(c => c.VatNumber)

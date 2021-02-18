@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.IO;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -8,24 +9,29 @@ using TinyBank.Core.Data;
 using TinyBank.Core.Model;
 using TinyBank.Core.Model.Types;
 using TinyBank.Core.Config.Extentions;
-
-using Xunit;
 using TinyBank.Core.Services;
 using TinyBank.Core.Services.Options;
 using TinyBank.Core.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using TinyBank.Core.Consts;
 
+using Xunit;
+using System.Threading.Tasks;
+
 namespace TinyBank.Core.Tests
 {
     public class CustomerTests : IClassFixture<TinyBankFixture>
     {
         private ICustomerService _customer;
+        private IFileParser _fileParser;
 
         public CustomerTests(TinyBankFixture fixture)
         {
             _customer = fixture.Scope.ServiceProvider
                 .GetRequiredService<ICustomerService>();
+
+            _fileParser = fixture.Scope.ServiceProvider
+                .GetRequiredService<IFileParser>();
         }
         [Fact]
         public void Add_New_Customer()
@@ -84,7 +90,7 @@ namespace TinyBank.Core.Tests
         }
 
         [Fact]
-        public async void Add_New_Customer_Success_with_Async()
+        public async Task Add_New_Customer_Success_with_Async()
         {
             var options = new RegisterCustomerOptions()
             {
@@ -101,7 +107,7 @@ namespace TinyBank.Core.Tests
         }
 
         [Fact]
-        public async void Update_Customer_Success_with_Async()
+        public async Task Update_Customer_Success_with_Async()
         {
             var options = new RegisterCustomerOptions()
             {
@@ -118,7 +124,7 @@ namespace TinyBank.Core.Tests
         }
 
         [Fact]
-        public async void Delete_Customer_Success_with_Async()
+        public async Task Delete_Customer_Success_with_Async()
         {
             var result = await _customer.DeleteCustomerAsync(2007);
             Assert.Equal(ResultCodes.Success, result.Code);
@@ -132,6 +138,26 @@ namespace TinyBank.Core.Tests
             var customers = dbContext.Set<Customer>()
                 .Where(c => c.VatNumber == "123456789")
                 .ToList();
+        }
+
+        [Fact]
+        public void Load_CustomerFile_Success()
+        {
+            var result = _fileParser.LoadCustFile(@"files\Book1.xlsx");
+
+            Assert.Equal(ResultCodes.Success, result.Code);
+            Assert.NotNull(result.Data);
+            Assert.Equal(3, result.Data.Count);
+            Assert.Equal(15873.92m, result.Data[2].TotalGross);
+        }
+
+        [Fact]
+        public  void ExportCustomerToFile_Success()
+        {
+            var result = _fileParser.ExportCustomersToFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"files\Customers.xlsx"));
+
+            Assert.Equal(ResultCodes.Success, result.Code);
+            Assert.True(result.Data);
         }
 
         private DbContextOptionsBuilder<TinyBankDBContext> GetDBOptions()

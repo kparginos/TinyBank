@@ -12,15 +12,18 @@ namespace TinyBank.Api.Controllers
     {
         private readonly ICustomerService _customer;
         private readonly IAccountsService _account;
+        private readonly IFileParser _fileParser;
         private readonly ILogger<CustomersController> _logger;
 
         public CustomersController(ILogger<CustomersController> logger,
             ICustomerService customer,
-            IAccountsService account)
+            IAccountsService account,
+            IFileParser fileParser)
         {
             _logger = logger;
             _customer = customer;
             _account = account;
+            _fileParser = fileParser;
         }
 
         [HttpPost]
@@ -47,5 +50,31 @@ namespace TinyBank.Api.Controllers
 
             return Json(account);
         }
+
+        [HttpGet("getcustomeraccounts/{customerID:int}")]
+        public async Task<IActionResult> GetCustomerAccounts(int customerID)
+        {
+            var result = await _customer.GetCustomerAccountsAsync(customerID);
+
+            return Json(result);
+        }
+
+        [HttpGet("{customerID:int}/state/{state:bool}")]
+        public async Task<IActionResult> SetCustomerState(int customerID, bool state)
+        {
+            var result = await _customer.SetStateAsync(customerID, state);
+
+            return Json(result);
+        }
+
+        [Route("ExportCustomerData")]
+        [HttpPost]
+        public IActionResult ExportCustomerData()
+        {
+            var result = _fileParser.ExportCustomersToFile(@"files\CustomerData.xlsx");
+
+            return Json(result);
+        }
+
     }
 }
