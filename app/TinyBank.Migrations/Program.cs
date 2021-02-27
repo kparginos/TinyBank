@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 
-using TinyBank.Core.Data;
+using TinyBank.Data;
 using TinyBank.Core.Config.Extentions;
 
 namespace TinyBank.Migrations

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using TinyBank.Core.Config;
 using TinyBank.Core.Config.Extentions;
-using TinyBank.Core.Data;
+using TinyBank.Data;
 using TinyBank.Core.Services.Interfaces;
 
 namespace TinyBank.Core.Services.Extentions
