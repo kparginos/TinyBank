@@ -3,7 +3,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TinyBank.Core.Consts;
-using TinyBank.Core.Model.Types;
+using TinyBank.Model.Types;
 using TinyBank.Core.Services.Extentions;
 using TinyBank.Core.Services.Interfaces;
 using TinyBank.Core.Services.Options;
