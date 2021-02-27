@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using TinyBank.Core.Model;
+using TinyBank.Model;
 
 namespace TinyBank.Core.Data
 {

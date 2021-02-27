@@ -1,4 +1,4 @@
-﻿using TinyBank.Core.Model.Types;
+﻿using TinyBank.Model.Types;
 
 namespace TinyBank.Core.Services.Options
 {

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\TinyBank.Core\TinyBank.Core.csproj" />
+    <ProjectReference Include="..\..\src\TinyBank.Model\TinyBank.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,11 +6,10 @@ using System.Globalization;
 
 using Npoi.Mapper;
 
-using TinyBank.Core.Model;
+using TinyBank.Model;
 using TinyBank.Core.Services.Interfaces;
 using TinyBank.Core.Services.Results;
 using TinyBank.Core.Consts;
-using TinyBank.Core.Data;
 
 namespace TinyBank.Core.Services
 {
