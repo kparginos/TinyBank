@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using TinyBank.Core.Model;
-using TinyBank.Core.Model.Types;
+using TinyBank.Model;
+using TinyBank.Model.Types;
 using TinyBank.Core.Services.Options;
 using TinyBank.Core.Services.Results;
 
