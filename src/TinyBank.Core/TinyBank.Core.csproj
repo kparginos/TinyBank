@@ -5,8 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\**" />
     <Compile Remove="Model\**" />
+    <EmbeddedResource Remove="Data\**" />
     <EmbeddedResource Remove="Model\**" />
+    <None Remove="Data\**" />
     <None Remove="Model\**" />
   </ItemGroup>
 
@@ -20,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TinyBank.Data\TinyBank.Data.csproj" />
     <ProjectReference Include="..\TinyBank.Model\TinyBank.Model.csproj" />
   </ItemGroup>
 

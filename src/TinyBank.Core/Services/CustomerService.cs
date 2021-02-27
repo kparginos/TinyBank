@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 using TinyBank.Core.Consts;
-using TinyBank.Core.Data;
+using TinyBank.Data;
 using TinyBank.Model;
 using TinyBank.Core.Services.Interfaces;
 using TinyBank.Core.Services.Options;
