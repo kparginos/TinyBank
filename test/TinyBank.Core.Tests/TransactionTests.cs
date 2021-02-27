@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TinyBank.Core.Config.Extentions;
-using TinyBank.Core.Data;
+using TinyBank.Data;
 using TinyBank.Model;
 using TinyBank.Model.Types;
 using TinyBank.Core.Services.Interfaces;
