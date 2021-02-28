@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using TinyBank.Data;
 using TinyBank.Model;
 using TinyBank.Model.Types;
-using TinyBank.Core.Config.Extentions;
+using TinyBank.Config.Extentions;
 using TinyBank.Core.Services;
 using TinyBank.Core.Services.Options;
 using TinyBank.Core.Services.Interfaces;
