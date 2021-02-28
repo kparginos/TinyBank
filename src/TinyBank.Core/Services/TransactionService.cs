@@ -78,6 +78,16 @@ namespace TinyBank.Core.Services
                     Message = $"Could not find Account ID {accountID}"
                 };
 
+            if(result.Data.State == Model.Types.AccountStateTypes.Inactive ||
+                result.Data.State == Model.Types.AccountStateTypes.Inactive)
+            {
+                return new Result<Transaction>()
+                {
+                    Code = ResultCodes.BadRequest,
+                    Message = $"Cannot create Transaction on Account Number {result.Data.AccountNumber} because its state is {result.Data.State}"
+                };
+            }
+
             // check account balance. Must be >= options.Type * options.Amount
             if (options.Type == Model.Types.TransactionType.Credit && result.Data.Balance + (int)options.Type * options.Amount < 0)
                 return new Result<Transaction>()
