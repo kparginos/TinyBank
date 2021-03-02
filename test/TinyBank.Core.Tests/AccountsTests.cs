@@ -4,11 +4,11 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TinyBank.Core.Config.Extentions;
+using TinyBank.Config.Extentions;
 using TinyBank.Core.Consts;
-using TinyBank.Core.Data;
-using TinyBank.Core.Model;
-using TinyBank.Core.Model.Types;
+using TinyBank.Data;
+using TinyBank.Model;
+using TinyBank.Model.Types;
 using TinyBank.Core.Services.Interfaces;
 using TinyBank.Core.Services.Options;
 
