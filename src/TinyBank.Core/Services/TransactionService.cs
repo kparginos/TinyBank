@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 
 using TinyBank.Core.Consts;
-using TinyBank.Core.Data;
-using TinyBank.Core.Model;
+using TinyBank.Data;
+using TinyBank.Model;
 using TinyBank.Core.Services.Interfaces;
 using TinyBank.Core.Services.Options;
 using TinyBank.Core.Services.Results;
@@ -77,6 +77,16 @@ namespace TinyBank.Core.Services
                     Code = ResultCodes.BadRequest,
                     Message = $"Could not find Account ID {accountID}"
                 };
+
+            if(result.Data.State == Model.Types.AccountStateTypes.Inactive ||
+                result.Data.State == Model.Types.AccountStateTypes.Inactive)
+            {
+                return new Result<Transaction>()
+                {
+                    Code = ResultCodes.BadRequest,
+                    Message = $"Cannot create Transaction on Account Number {result.Data.AccountNumber} because its state is {result.Data.State}"
+                };
+            }
 
             // check account balance. Must be >= options.Type * options.Amount
             if (options.Type == Model.Types.TransactionType.Credit && result.Data.Balance + (int)options.Type * options.Amount < 0)

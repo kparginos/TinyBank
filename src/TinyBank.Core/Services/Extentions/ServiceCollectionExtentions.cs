@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using TinyBank.Core.Config;
-using TinyBank.Core.Config.Extentions;
-using TinyBank.Core.Data;
+using TinyBank.Config;
+using TinyBank.Config.Extentions;
+using TinyBank.Data;
 using TinyBank.Core.Services.Interfaces;
 
 namespace TinyBank.Core.Services.Extentions

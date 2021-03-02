@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using TinyBank.Core.Model;
+using TinyBank.Model;
 using TinyBank.Core.Services.Options;
 using TinyBank.Core.Services.Results;
 
