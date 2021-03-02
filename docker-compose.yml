@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  tinybank.api:
+    image: ${DOCKER_REGISTRY-}tinybankapi
+    build:
+      context: .
+      dockerfile: app/TinyBank.Api/Dockerfile
+    ports:
+      - "49172:443"
+      - "49173:80"
