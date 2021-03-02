@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 using TinyBank.API.Controllers.Requests;
 using TinyBank.Core.Consts;
-using TinyBank.Core.Model.Types;
+using TinyBank.Model.Types;
 using TinyBank.Core.Services.Interfaces;
 
 namespace TinyBank.API.Controllers
