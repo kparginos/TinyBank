@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using TinyBank.Model.Types;
 
@@ -15,15 +14,22 @@ namespace TinyBank.Model
         public string Name { get; set; }
         public string SureName { get; set; }
         public string VatNumber { get; set; }
-        public List<Accounts> Accounts { get; set; }
         public bool Active { get; set; } = true;
         public string Address { get; set; }
         public CustomerType CustType { get; set; }
-        public DateTime Created { get; private set; }
+        public string Phone { get; set; }
+        public string CountryCode { get; set; }
+
+        #region Navigation Properties
+        public List<Accounts> Accounts { get; set; }
+        #endregion
+
+        public AuditInfo AuditInfo { get; set; }
+
         public Customer()
         {
-            Created = DateTime.Now;
             Accounts = new List<Accounts>();
+            AuditInfo = new AuditInfo();
         }
     }
 }
