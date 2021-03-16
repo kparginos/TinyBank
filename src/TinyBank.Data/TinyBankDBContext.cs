@@ -20,32 +20,54 @@ namespace TinyBank.Data
             base.OnModelCreating(modelBuilder);
 
             // Customer Table Entity
-            modelBuilder.Entity<Customer>()
-                .ToTable("Customer");
+            modelBuilder.Entity<Customer>(
+                builder =>
+                {
+                    builder.ToTable("Customer");
+                    builder.HasIndex(c => c.VatNumber)
+                                    .IsUnique();
+                    builder.HasIndex(c => c.CustBankID)
+                                    .IsUnique();
+                    builder.OwnsOne<AuditInfo>(c => c.AuditInfo);
+                });
 
             // CustomerAccounts_V View Entity
-            modelBuilder.Entity<CustomerAccounts_V>()
-                .ToView("CustomerAccounts_V")
-                .HasNoKey();
-
-            modelBuilder.Entity<Customer>()
-                .HasIndex(c => c.VatNumber)
-                .IsUnique();
-            modelBuilder.Entity<Customer>()
-                .HasIndex(c => c.CustBankID)
-                .IsUnique();
+            modelBuilder.Entity<CustomerAccounts_V>(
+                builder =>
+                {
+                    builder.ToView("CustomerAccounts_V");
+                    builder.HasNoKey();
+                });
 
             // Accounts Table Entity
-            modelBuilder.Entity<Accounts>()
-                .ToTable("Accounts");
-            modelBuilder.Entity<Accounts>()
-                .HasIndex(an => an.AccountNumber)
-                .IsUnique();
+            modelBuilder.Entity<Accounts>(
+                builder =>
+                {
+                    builder.ToTable("Accounts");
+                    builder
+                    .HasIndex(an => an.AccountNumber)
+                    .IsUnique();
+
+                    builder.OwnsOne<AuditInfo>(a => a.AuditInfo);
+                });
 
             // Transaction Table Entity
-            modelBuilder.Entity<Transaction>()
-                .ToTable("Transaction");
+            modelBuilder.Entity<Transaction>(
+                builder =>
+                {
+                    builder.ToTable("Transaction");
+                });                
 
+            // Cards Table Entity
+            modelBuilder.Entity<Card>(
+                builder =>
+                {
+                    builder.ToTable("Card");
+                    builder
+                    .HasIndex(c => c.CardNumber)
+                    .IsUnique();
+                });
+                
         }
     }
 }
