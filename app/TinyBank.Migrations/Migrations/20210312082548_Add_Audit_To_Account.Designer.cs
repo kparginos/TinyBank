@@ -3,36 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TinyBank.Data;
 
 namespace TinyBank.Migrations
 {
     [DbContext(typeof(TinyBankDBContext))]
-    partial class TinyBankDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210312082548_Add_Audit_To_Account")]
+    partial class Add_Audit_To_Account
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("AccountsCard", b =>
-                {
-                    b.Property<int>("AccountsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CardsCardId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AccountsId", "CardsCardId");
-
-                    b.HasIndex("CardsCardId");
-
-                    b.ToTable("AccountsCard");
-                });
 
             modelBuilder.Entity("TinyBank.Model.Accounts", b =>
                 {
@@ -53,7 +40,7 @@ namespace TinyBank.Migrations
                     b.Property<string>("Currency")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<int>("State")
@@ -202,55 +189,11 @@ namespace TinyBank.Migrations
                     b.ToTable("Transaction");
                 });
 
-            modelBuilder.Entity("TinyCardLimits.Core.Model.Card", b =>
-                {
-                    b.Property<int>("CardId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal?>("AvailableBalance")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("CardNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("Expiration")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("CardId");
-
-                    b.ToTable("Card");
-                });
-
-            modelBuilder.Entity("AccountsCard", b =>
-                {
-                    b.HasOne("TinyBank.Model.Accounts", null)
-                        .WithMany()
-                        .HasForeignKey("AccountsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TinyCardLimits.Core.Model.Card", null)
-                        .WithMany()
-                        .HasForeignKey("CardsCardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TinyBank.Model.Accounts", b =>
                 {
                     b.HasOne("TinyBank.Model.Customer", null)
                         .WithMany("Accounts")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
                     b.OwnsOne("TinyBank.Model.AuditInfo", "AuditInfo", b1 =>
                         {

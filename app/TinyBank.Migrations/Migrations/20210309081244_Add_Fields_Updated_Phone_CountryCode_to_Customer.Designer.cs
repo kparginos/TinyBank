@@ -3,36 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TinyBank.Data;
 
 namespace TinyBank.Migrations
 {
     [DbContext(typeof(TinyBankDBContext))]
-    partial class TinyBankDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210309081244_Add_Fields_Updated_Phone_CountryCode_to_Customer")]
+    partial class Add_Fields_Updated_Phone_CountryCode_to_Customer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("AccountsCard", b =>
-                {
-                    b.Property<int>("AccountsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CardsCardId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AccountsId", "CardsCardId");
-
-                    b.HasIndex("CardsCardId");
-
-                    b.ToTable("AccountsCard");
-                });
 
             modelBuilder.Entity("TinyBank.Model.Accounts", b =>
                 {
@@ -50,10 +37,13 @@ namespace TinyBank.Migrations
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Currency")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<int>("State")
@@ -86,6 +76,9 @@ namespace TinyBank.Migrations
                     b.Property<string>("CountryCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CustBankID")
                         .HasColumnType("nvarchar(450)");
 
@@ -100,6 +93,9 @@ namespace TinyBank.Migrations
 
                     b.Property<string>("SureName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("Updated")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("VatNumber")
                         .HasColumnType("nvarchar(450)");
@@ -202,104 +198,11 @@ namespace TinyBank.Migrations
                     b.ToTable("Transaction");
                 });
 
-            modelBuilder.Entity("TinyCardLimits.Core.Model.Card", b =>
-                {
-                    b.Property<int>("CardId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal?>("AvailableBalance")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("CardNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("Expiration")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("CardId");
-
-                    b.ToTable("Card");
-                });
-
-            modelBuilder.Entity("AccountsCard", b =>
-                {
-                    b.HasOne("TinyBank.Model.Accounts", null)
-                        .WithMany()
-                        .HasForeignKey("AccountsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TinyCardLimits.Core.Model.Card", null)
-                        .WithMany()
-                        .HasForeignKey("CardsCardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TinyBank.Model.Accounts", b =>
                 {
                     b.HasOne("TinyBank.Model.Customer", null)
                         .WithMany("Accounts")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsOne("TinyBank.Model.AuditInfo", "AuditInfo", b1 =>
-                        {
-                            b1.Property<int>("AccountsId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int")
-                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                            b1.Property<DateTimeOffset>("Created")
-                                .HasColumnType("datetimeoffset");
-
-                            b1.Property<DateTimeOffset?>("Updated")
-                                .HasColumnType("datetimeoffset");
-
-                            b1.HasKey("AccountsId");
-
-                            b1.ToTable("Accounts");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AccountsId");
-                        });
-
-                    b.Navigation("AuditInfo");
-                });
-
-            modelBuilder.Entity("TinyBank.Model.Customer", b =>
-                {
-                    b.OwnsOne("TinyBank.Model.AuditInfo", "AuditInfo", b1 =>
-                        {
-                            b1.Property<int>("CustomerId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int")
-                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                            b1.Property<DateTimeOffset>("Created")
-                                .HasColumnType("datetimeoffset");
-
-                            b1.Property<DateTimeOffset?>("Updated")
-                                .HasColumnType("datetimeoffset");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("Customer");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
-
-                    b.Navigation("AuditInfo");
+                        .HasForeignKey("CustomerId");
                 });
 
             modelBuilder.Entity("TinyBank.Model.Transaction", b =>
