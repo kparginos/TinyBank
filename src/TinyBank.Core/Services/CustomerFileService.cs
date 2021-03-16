@@ -102,7 +102,7 @@ namespace TinyBank.Core.Services
                 {
                     var mapper = new Mapper();
 
-                    mapper.Format<Customer>("dd/MM/yyyy hh:mm:ss.00", d => d.Created);
+                    mapper.Format<Customer>("dd/MM/yyyy hh:mm:ss.00", d => d.AuditInfo.Created);
                     mapper.Save<Customer>(exportPath, result.Data, "Customer Data");
 
                     return new Result<bool>()
