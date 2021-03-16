@@ -56,6 +56,7 @@ namespace TinyBank.Core.Services
                 return new Result<Transaction>()
                 {
                     Code = ResultCodes.Success,
+                    Message = $"New Transaction amount {options.Amount} {((options.Type == Model.Types.TransactionType.Credit) ? "Deducted" : "Added")} for Acount {result.Data.AccountNumber}",
                     Data = transaction
                 };
             }
@@ -113,6 +114,7 @@ namespace TinyBank.Core.Services
                 return new Result<Transaction>()
                 {
                     Code = ResultCodes.Success,
+                    Message = $"New Transaction amount {options.Amount} {((options.Type == Model.Types.TransactionType.Credit) ? "Deducted" : "Added")} for Acount {result.Data.AccountNumber}",
                     Data = transaction
                 };
             }
