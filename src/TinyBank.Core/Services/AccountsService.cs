@@ -196,6 +196,7 @@ namespace TinyBank.Core.Services
         {
             var account = _dBContext.Set<Accounts>()
                 .Where(a => a.AccountsId == accountID)
+                //.Include(c => c.Cards)
                 .SingleOrDefault();
 
             if (account != null)
@@ -299,6 +300,36 @@ namespace TinyBank.Core.Services
                     Message = result.Message
                 };
             }
+        }
+        public async Task<Result<Accounts>> GetAccountbyNumberAsync(string accountNumber)
+        {
+            if (string.IsNullOrWhiteSpace(accountNumber))
+            {
+                return new Result<Accounts>()
+                {
+                    Code = ResultCodes.BadRequest,
+                    Message = $"Account Number cannot be empty or null"
+                };
+            }
+
+            var account = await _dBContext.Set<Accounts>()
+                .Where(a => a.AccountNumber == accountNumber)
+                .SingleOrDefaultAsync();
+            if (account == null)
+            {
+                return new Result<Accounts>()
+                {
+                    Code = ResultCodes.NotFound,
+                    Message = $"Account Number not found"
+                };
+            }
+
+            return new Result<Accounts>()
+            {
+                Code = ResultCodes.Success,
+                Message = $"Account number found",
+                Data = account
+            };
         }
     }
 }
