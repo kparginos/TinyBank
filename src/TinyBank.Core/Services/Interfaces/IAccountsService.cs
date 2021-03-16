@@ -14,6 +14,7 @@ namespace TinyBank.Core.Services.Interfaces
         public Task<Result<Accounts>> SetStateAsync(int accountID, AccountStateTypes state);
         public Result<Accounts> GetAccountbyID(int accountID);
         public Task<Result<Accounts>> GetAccountbyIDAsync(int accountID);
+        public Task<Result<Accounts>> GetAccountbyNumberAsync(string accountNumber);
         public Result<Accounts> GetAccountbyCustomerID(int customerID, int accountID);
         public Task<Result<Accounts>> GetAccountbyCustomerIDAsync(int customerID, int accountID);
     }
