@@ -32,6 +32,7 @@ namespace TinyBank.Core.Services.Extentions
                 @this.AddScoped<IAccountsService, AccountsService>();
                 @this.AddScoped<ITransactionService, TransactionService>();
                 @this.AddScoped<IFileParser, CustomerFileService>();
+                @this.AddScoped<ICardService, CardService>();
             }
             else
             {
@@ -39,6 +40,7 @@ namespace TinyBank.Core.Services.Extentions
                 @this.AddScoped<IAccountsService, AccountsService>();
                 @this.AddScoped<ITransactionService, TransactionService>();
                 @this.AddScoped<IFileParser, CustomerFileService>();
+                @this.AddScoped<ICardService, CardService>();
             }
 
         }
