@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TinyBank.Model.Types;
 
 namespace TinyBank.Model
@@ -14,14 +13,20 @@ namespace TinyBank.Model
         public string AccountDescription { get; set; }
         public string Currency { get; set; }
         public decimal Balance { get; set; } = 0;
-        public DateTime Created { get; private set; }
         public AccountStateTypes State { get; set; } = AccountStateTypes.Inactive;
+        public AuditInfo AuditInfo { get; set; }
+
+        #region Navigation properties
         public List<Transaction> Transactions { get; set; }
+        public List<Card> Cards { get; set; }
+        public int CustomerId { get; set; }
+        #endregion
 
         public Accounts()
         {
-            Created = DateTime.Now;
             Transactions = new List<Transaction>();
+            AuditInfo = new AuditInfo();
+            Cards = new List<Card>();
         }
     }
 }
