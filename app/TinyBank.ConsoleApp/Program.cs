@@ -76,7 +76,7 @@ namespace TinyBank.ConsoleApp
                                 $"Account Description: {account.AccountDescription}\n" +
                                 $"Account Balance: {account.Balance}\n" +
                                 $"Account Currency: {account.Currency}\n" +
-                                $"Created On: {account.Created}\n" +
+                                $"Created On: {account.AuditInfo.Created}\n" +
                                 $"Account Active: {account.State}");
                         }
                         else
@@ -123,7 +123,7 @@ namespace TinyBank.ConsoleApp
                                 $"Customer Bank ID: {cust.CustBankID}\n" +
                                 $"Customer VAT Number: {cust.VatNumber}\n" +
                                 $"Customer Address: {cust.Address}\n" +
-                                $"Created On: {cust.Created}\n" +
+                                $"Created On: {cust.AuditInfo.Created}\n" +
                                 $"Customer Active: {cust.Active}");
                         }
                         else
