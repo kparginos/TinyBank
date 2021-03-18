@@ -55,6 +55,15 @@ namespace TinyBank.Core.Services
                     Message = $"VAT number must be numeric!"
                 };
 
+            if (!Country.SupportedCountryCodes.Contains(options.CountryCode))
+            {
+                return new Result<Customer>()
+                {
+                    Code = ResultCodes.BadRequest,
+                    Message = $"Country code {options.CountryCode} is not supported"
+                };
+            }
+
             var customer = new Customer()
             {
                 Name = options.Name,

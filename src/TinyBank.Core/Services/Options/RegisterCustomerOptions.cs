@@ -10,5 +10,6 @@ namespace TinyBank.Core.Services.Options
         public string CustomerBankID { get; set; }
         public CustomerType CustType { get; set; }
         public string Address { get; set; }
+        public string CountryCode { get; set; }
     }
 }
