@@ -41,26 +41,24 @@ namespace TinyBank.Core.Services
                     Message = $"Customer sure name is empty!"
                 };
 
-            if (options.VATNumber.Length != 9)
+            var validVatNumber = IsValidVatNumber(options.CountryCode, options.VATNumber);
+
+            if (!validVatNumber.IsSuccess())
+            {
                 return new Result<Customer>()
                 {
-                    Code = ResultCodes.BadRequest,
-                    Message = $"VAT Number length is invalid!"
+                    Code = validVatNumber.Code,
+                    Message = validVatNumber.Message
                 };
+            }
 
-            if (!long.TryParse(options.VATNumber, out vatNumber))
-                return new Result<Customer>()
-                {
-                    Code = ResultCodes.BadRequest,
-                    Message = $"VAT number must be numeric!"
-                };
-
-            if (!Country.SupportedCountryCodes.Contains(options.CountryCode))
+            if(_dbContext.Set<Customer>()
+                .Any(c => c.VatNumber == options.VATNumber))
             {
                 return new Result<Customer>()
                 {
                     Code = ResultCodes.BadRequest,
-                    Message = $"Country code {options.CountryCode} is not supported"
+                    Message = $"Specific Vat Number {options.VATNumber} already exists!"
                 };
             }
 
@@ -100,19 +98,25 @@ namespace TinyBank.Core.Services
                     Message = "Customer sure name is empty"
                 };
 
-            if (options.VATNumber.Length != 9)
+            var validVatNumber = IsValidVatNumber(options.CountryCode, options.VATNumber);
+            if (!validVatNumber.IsSuccess())
+            {
                 return new Result<Customer>()
                 {
-                    Code = ResultCodes.BadRequest,
-                    Message = "VAT Number length is invalid"
+                    Code = validVatNumber.Code,
+                    Message = validVatNumber.Message
                 };
+            }
 
-            if (!long.TryParse(options.VATNumber, out vatNumber))
+            if (await _dbContext.Set<Customer>()
+                .AnyAsync(c => c.VatNumber == options.VATNumber))
+            {
                 return new Result<Customer>()
                 {
                     Code = ResultCodes.BadRequest,
-                    Message = "VAT Number name is invalid"
+                    Message = $"Specific Vat Number {options.VATNumber} already exists!"
                 };
+            }
 
             var customer = new Customer()
             {
@@ -199,9 +203,18 @@ namespace TinyBank.Core.Services
 
         public Result<Customer> UpdateCustomer(int customerID, RegisterCustomerOptions options)
         {
+            if (options == null)
+            {
+                return new Result<Customer>()
+                {
+                    Code = ResultCodes.BadRequest,
+                    Message = $"Options must be specified"
+                };
+            }
+
             var result = GetCustomerbyID(customerID);
 
-            if(result.Code == ResultCodes.Success)
+            if(result.IsSuccess())
             {
                 var customer = result.Data;
 
@@ -234,6 +247,15 @@ namespace TinyBank.Core.Services
 
         public async Task<Result<Customer>> UpdateCustomerAsync(int customerID, RegisterCustomerOptions options)
         {
+            if (options == null)
+            {
+                return new Result<Customer>()
+                {
+                    Code = ResultCodes.BadRequest,
+                    Message = $"Options must be specified"
+                };
+            }
+
             var result = await GetCustomerbyIDAsync(customerID);
 
             if (result.Code == ResultCodes.Success)
@@ -472,6 +494,52 @@ namespace TinyBank.Core.Services
                     Message = $"Customers found {customers.Count}"
                 };
             }
+        }
+        public Result<bool> IsValidVatNumber(string countryCode, string vatNumber)
+        {
+            if (!string.IsNullOrWhiteSpace(countryCode))
+            {
+                return new Result<bool>()
+                {
+                    Code = ResultCodes.BadRequest,
+                    Message = $"Country Code cannot be Null or Empty",
+                    Data = false
+                };
+            }
+            if (!string.IsNullOrWhiteSpace(vatNumber))
+            {
+                return new Result<bool>()
+                {
+                    Code = ResultCodes.BadRequest,
+                    Message = $"VAT Number cannot be Null or Empty",
+                    Data = false
+                };
+            }
+            if (Country.VatValidNumbers.TryGetValue(countryCode, out var _))
+            {
+                return new Result<bool>()
+                {
+                    Code = ResultCodes.BadRequest,
+                    Message = $"Country Code is invalid",
+                    Data = false
+                };
+            }
+            if (vatNumber.Length == Country.VatValidNumbers.GetValueOrDefault(countryCode))
+            {
+                return new Result<bool>()
+                {
+                    Code = ResultCodes.BadRequest,
+                    Message = $"VAT Number {vatNumber} length is invalid for Country Code {countryCode}",
+                    Data = false
+                };
+            }
+
+            return new Result<bool>()
+            {
+                Code = ResultCodes.Success,
+                Message = "VAT Number is valid",
+                Data = true
+            };
         }
         #endregion
     }

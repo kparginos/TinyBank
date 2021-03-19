@@ -9,15 +9,22 @@ namespace TinyBank.Core.Consts
     public static class Country
     {
         public const string GreekCountryCode = "GR";
-        public const string CyprusCountryCode = "GR";
-        public const string ItalyCountryCode = "GR";
+        public const string CyprusCountryCode = "CY";
+        public const string ItalyCountryCode = "IT";
 
-        public static readonly IReadOnlyCollection<string> SupportedCountryCodes =
-            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        //public static readonly IReadOnlyCollection<string> SupportedCountryCodes =
+        //    new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        //    {
+        //        GreekCountryCode,
+        //        CyprusCountryCode,
+        //        ItalyCountryCode
+        //    };
+        public static readonly IReadOnlyDictionary<string, int> VatValidNumbers =
+            new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
             {
-                GreekCountryCode,
-                CyprusCountryCode,
-                ItalyCountryCode
+                {GreekCountryCode, 9 },
+                {CyprusCountryCode, 11 },
+                {ItalyCountryCode, 10 }
             };
     }
 }

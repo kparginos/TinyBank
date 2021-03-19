@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-
+using AutoMapper;
 using TinyBank.Core.Consts;
 using TinyBank.Core.Services.Interfaces;
 using TinyBank.Core.Services.Options;
@@ -14,12 +14,14 @@ namespace TinyBank.Core.Services
     {
         private readonly TinyBankDBContext _dbContext;
         private readonly IAccountsService _account;
+        private readonly IMapper _mapper;
 
         public CardService(TinyBankDBContext dbContext,
             IAccountsService account)
         {
             _dbContext = dbContext;
             _account = account;
+            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<RegisterCardOptions, Card>()).CreateMapper();
         }
         public async Task<Result<Card>> RegisterAsync(RegisterCardOptions options)
         {
@@ -66,7 +68,7 @@ namespace TinyBank.Core.Services
             {
                 Code = ResultCodes.Success,
                 Message = $"New Card {card.CardNumber} added successfully",
-                Data = card
+                Data = _mapper.Map<Card>(options)
             };
         }
 

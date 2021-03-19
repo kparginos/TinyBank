@@ -23,5 +23,6 @@ namespace TinyBank.Core.Services.Interfaces
         public Task<Result<Customer>> GetCustomerbyIDAsync(int customerID);
         public ResultList<CustomerAccounts_V> GetCustomerAccounts(int customerID);
         public Task<ResultList<CustomerAccounts_V>> GetCustomerAccountsAsync(int customerID);
+        public Result<bool> IsValidVatNumber(string countryCode, string vatNumber);
     }
 }

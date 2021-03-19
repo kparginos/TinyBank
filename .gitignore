@@ -340,3 +340,6 @@ ASALocalRun/
 healthchecksdb
 /app/TinyBank.API/build
 /app/TinyBank.API/filesCustomerData.xlsx
+/app/TinyBank.Migrations/script.sql
+/test_readme.md
+/.editorconfig

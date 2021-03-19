@@ -30,7 +30,8 @@ namespace TinyBank.Api.Controllers
             _fileParser = fileParser;
         }
 
-        [HttpPost]
+        [HttpPost("Register")]
+        //[Route("Register")]
         public async Task<IActionResult> Register(
             [FromBody] RegisterCustomerOptions options)
         {
