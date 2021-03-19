@@ -16,15 +16,27 @@ namespace TinyBank.Core.Services
 {
     public class CustomerService : ICustomerService
     {
-        long vatNumber = 0;
         private readonly TinyBankDBContext _dbContext;
 
+        /// <summary>
+        ///     Constructor
+        /// </summary>
+        /// <param name="dbContext">The DBContext to be use by the rest of the methods when accessing the database</param>
         public CustomerService(TinyBankDBContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         #region CRUD operations
+        /// <summary>
+        ///     Adds a new customer
+        /// </summary>
+        /// <param name="options">RegisterCustomerOptions</param>
+        /// <returns>
+        ///     Result<Customer>
+        ///     Result.Code should be Success(200)
+        ///     Check Result.Code and Result.Message to get more details about possible errors
+        /// </returns>
         public Result<Customer> Register(RegisterCustomerOptions options)
         {
             if (string.IsNullOrWhiteSpace(options.Name))
@@ -82,6 +94,15 @@ namespace TinyBank.Core.Services
             };
         }
 
+        /// <summary>
+        ///     Adds a new customer using with Async support
+        /// </summary>
+        /// <param name="options">RegisterCustomerOptions</param>
+        /// <returns>
+        ///     Task<Result<Customer>>
+        ///     Result.Code should be Success(200)
+        ///     Check Result.Code and Result.Message to get more details about possible errors
+        /// </returns>
         public async Task<Result<Customer>> RegisterAsync(RegisterCustomerOptions options)
         {
             if (string.IsNullOrWhiteSpace(options.Name))
@@ -149,6 +170,15 @@ namespace TinyBank.Core.Services
             };
         }
 
+        /// <summary>
+        ///     Deletes a given customer Id
+        /// </summary>
+        /// <param name="customerID">The customer Id to be deleted</param>
+        /// <returns>
+        ///     Result<bool>
+        ///     Result.Code should be Success(200)
+        ///     Check Result.Code and Result.Message to get more details about possible errors
+        /// </returns>
         public Result<bool> DeleteCustomer(int customerID)
         {
             var result = GetCustomerbyID(customerID);
@@ -175,6 +205,15 @@ namespace TinyBank.Core.Services
             }
         }
 
+        /// <summary>
+        ///     Deletes a given customer Id with Async support
+        /// </summary>
+        /// <param name="customerID">The customer Id to be deleted</param>
+        /// <returns>
+        ///     Task<Result<bool>>
+        ///     Result.Code should be Success(200)
+        ///     Check Result.Code and Result.Message to get more details about possible errors
+        /// </returns>
         public async Task<Result<bool>> DeleteCustomerAsync(int customerID)
         {
             var result = await GetCustomerbyIDAsync(customerID);
@@ -201,6 +240,16 @@ namespace TinyBank.Core.Services
             }
         }
 
+        /// <summary>
+        ///     Updates a given customer Id
+        /// </summary>
+        /// <param name="customerID">The customer Id to updated</param>
+        /// <param name="options">The information to be updated as type of RegisterCustomerOptions </param>
+        /// <returns>
+        ///     Result<Customer>
+        ///     Result.Code should be Success(200)
+        ///     Check Result.Code and Result.Message to get more details about possible errors
+        /// </returns>
         public Result<Customer> UpdateCustomer(int customerID, RegisterCustomerOptions options)
         {
             if (options == null)
@@ -245,6 +294,16 @@ namespace TinyBank.Core.Services
             }
         }
 
+        /// <summary>
+        ///     Updates a given customer Id with Async support
+        /// </summary>
+        /// <param name="customerID">The customer Id to updated</param>
+        /// <param name="options">The information to be updated as type of RegisterCustomerOptions </param>
+        /// <returns>
+        ///     Task<Result<Customer>>
+        ///     Result.Code should be Success(200)
+        ///     Check Result.Code and Result.Message to get more details about possible errors
+        /// </returns>
         public async Task<Result<Customer>> UpdateCustomerAsync(int customerID, RegisterCustomerOptions options)
         {
             if (options == null)
@@ -289,6 +348,16 @@ namespace TinyBank.Core.Services
             }
         }
 
+        /// <summary>
+        ///     Changes the status of a given customer Id
+        /// </summary>
+        /// <param name="customerID">The customer Id to updated</param>
+        /// <param name="options">The status to be changed to</param>
+        /// <returns>
+        ///     Result<Customer>
+        ///     Result.Code should be Success(200)
+        ///     Check Result.Code and Result.Message to get more details about possible errors
+        /// </returns>
         public Result<Customer> SetState(int customerID, bool state)
         {
             var result = GetCustomerbyID(customerID);
@@ -318,6 +387,16 @@ namespace TinyBank.Core.Services
             }
         }
 
+        /// <summary>
+        ///     Changes the status of a given customer Id with Async support
+        /// </summary>
+        /// <param name="customerID">The customer Id to updated</param>
+        /// <param name="options">The status to be changed to</param>
+        /// <returns>
+        ///     Task<Result<Customer>>
+        ///     Result.Code should be Success(200)
+        ///     Check Result.Code and Result.Message to get more details about possible errors
+        /// </returns>
         public async Task<Result<Customer>> SetStateAsync(int customerID, bool state)
         {
             var result = await GetCustomerbyIDAsync(customerID);
@@ -349,6 +428,15 @@ namespace TinyBank.Core.Services
         #endregion
 
         #region Customer Info Operations
+        /// <summary>
+        ///     Gets information of a given customer Id
+        /// </summary>
+        /// <param name="customerID">The customer Id to updated</param>
+        /// <returns>
+        ///     Result<Customer>
+        ///     Result.Code should be Success(200)
+        ///     Check Result.Code and Result.Message to get more details about possible errors
+        /// </returns>
         public Result<Customer> GetCustomerbyID(int customerID)
         {
             var customer = _dbContext.Customer
@@ -374,6 +462,15 @@ namespace TinyBank.Core.Services
             }
         }
 
+        /// <summary>
+        ///     Gets information of a given customer Id with Async support
+        /// </summary>
+        /// <param name="customerID">The customer Id to updated</param>
+        /// <returns>
+        ///     Task<Result<Customer>>
+        ///     Result.Code should be Success(200)
+        ///     Check Result.Code and Result.Message to get more details about possible errors
+        /// </returns>
         public async Task<Result<Customer>> GetCustomerbyIDAsync(int customerID)
         {
             var customer = await _dbContext.Customer
@@ -400,6 +497,15 @@ namespace TinyBank.Core.Services
             }
         }
 
+        /// <summary>
+        ///     Gets a list of accounts bind to a given customer Id
+        /// </summary>
+        /// <param name="customerID">The customer Id to updated</param>
+        /// <returns>
+        ///     ResultList<CustomerAccounts_V>
+        ///     Result.Code should be Success(200)
+        ///     Check Result.Code and Result.Message to get more details about possible errors
+        /// </returns>
         public ResultList<CustomerAccounts_V> GetCustomerAccounts(int customerID)
         {
             var customerInfoResult = _dbContext.CustomerAccountsView
@@ -425,6 +531,15 @@ namespace TinyBank.Core.Services
             }
         }
 
+        /// <summary>
+        ///     Gets a list of accounts bind to a given customer Id with Async support
+        /// </summary>
+        /// <param name="customerID">The customer Id to updated</param>
+        /// <returns>
+        ///     Task<ResultList<CustomerAccounts_V>>
+        ///     Result.Code should be Success(200)
+        ///     Check Result.Code and Result.Message to get more details about possible errors
+        /// </returns>
         public async Task<ResultList<CustomerAccounts_V>> GetCustomerAccountsAsync(int customerID)
         {
             var customerInfoResult = await _dbContext.CustomerAccountsView
@@ -450,6 +565,14 @@ namespace TinyBank.Core.Services
             }
         }
 
+        /// <summary>
+        ///     Gets a list of all customers
+        /// </summary>
+        /// <returns>
+        ///     Result<List<Customer>>
+        ///     Result.Code should be Success(200)
+        ///     Check Result.Code and Result.Message to get more details about possible errors
+        /// </returns>
         public Result<List<Customer>> GetAllCustomers()
         {
             var customers = _dbContext.Customer
@@ -473,6 +596,14 @@ namespace TinyBank.Core.Services
             }
         }
 
+        /// <summary>
+        ///     Gets a list of all customers with Async support
+        /// </summary>
+        /// <returns>
+        ///     Result<List<Customer>>
+        ///     Result.Code should be Success(200)
+        ///     Check Result.Code and Result.Message to get more details about possible errors
+        /// </returns>
         public async Task<Result<List<Customer>>> GetAllCustomersAsync()
         {
             var customers = await _dbContext.Customer
@@ -495,6 +626,16 @@ namespace TinyBank.Core.Services
                 };
             }
         }
+
+        /// <summary>
+        ///     Checks whether a VAT number is valid for a given country code
+        /// </summary>
+        /// <param name="countryCode">The country code for whichc the VAT number is applied</param>
+        /// <param name="vatNumber">The VAT number to check</param>
+        ///     Result<bool>
+        ///     Result.Code should be Success(200)
+        ///     Check Result.Code and Result.Message to get more details about possible errors
+        /// </returns>
         public Result<bool> IsValidVatNumber(string countryCode, string vatNumber)
         {
             if (!string.IsNullOrWhiteSpace(countryCode))
