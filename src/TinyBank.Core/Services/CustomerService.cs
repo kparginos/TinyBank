@@ -33,7 +33,6 @@ namespace TinyBank.Core.Services
         /// </summary>
         /// <param name="options">RegisterCustomerOptions</param>
         /// <returns>
-        ///     Result<Customer>
         ///     Result.Code should be Success(200)
         ///     Check Result.Code and Result.Message to get more details about possible errors
         /// </returns>
@@ -99,7 +98,6 @@ namespace TinyBank.Core.Services
         /// </summary>
         /// <param name="options">RegisterCustomerOptions</param>
         /// <returns>
-        ///     Task<Result<Customer>>
         ///     Result.Code should be Success(200)
         ///     Check Result.Code and Result.Message to get more details about possible errors
         /// </returns>
@@ -175,7 +173,6 @@ namespace TinyBank.Core.Services
         /// </summary>
         /// <param name="customerID">The customer Id to be deleted</param>
         /// <returns>
-        ///     Result<bool>
         ///     Result.Code should be Success(200)
         ///     Check Result.Code and Result.Message to get more details about possible errors
         /// </returns>
@@ -210,7 +207,6 @@ namespace TinyBank.Core.Services
         /// </summary>
         /// <param name="customerID">The customer Id to be deleted</param>
         /// <returns>
-        ///     Task<Result<bool>>
         ///     Result.Code should be Success(200)
         ///     Check Result.Code and Result.Message to get more details about possible errors
         /// </returns>
@@ -246,7 +242,6 @@ namespace TinyBank.Core.Services
         /// <param name="customerID">The customer Id to updated</param>
         /// <param name="options">The information to be updated as type of RegisterCustomerOptions </param>
         /// <returns>
-        ///     Result<Customer>
         ///     Result.Code should be Success(200)
         ///     Check Result.Code and Result.Message to get more details about possible errors
         /// </returns>
@@ -300,7 +295,6 @@ namespace TinyBank.Core.Services
         /// <param name="customerID">The customer Id to updated</param>
         /// <param name="options">The information to be updated as type of RegisterCustomerOptions </param>
         /// <returns>
-        ///     Task<Result<Customer>>
         ///     Result.Code should be Success(200)
         ///     Check Result.Code and Result.Message to get more details about possible errors
         /// </returns>
@@ -354,7 +348,6 @@ namespace TinyBank.Core.Services
         /// <param name="customerID">The customer Id to updated</param>
         /// <param name="options">The status to be changed to</param>
         /// <returns>
-        ///     Result<Customer>
         ///     Result.Code should be Success(200)
         ///     Check Result.Code and Result.Message to get more details about possible errors
         /// </returns>
@@ -393,7 +386,6 @@ namespace TinyBank.Core.Services
         /// <param name="customerID">The customer Id to updated</param>
         /// <param name="options">The status to be changed to</param>
         /// <returns>
-        ///     Task<Result<Customer>>
         ///     Result.Code should be Success(200)
         ///     Check Result.Code and Result.Message to get more details about possible errors
         /// </returns>
@@ -433,14 +425,16 @@ namespace TinyBank.Core.Services
         /// </summary>
         /// <param name="customerID">The customer Id to updated</param>
         /// <returns>
-        ///     Result<Customer>
         ///     Result.Code should be Success(200)
         ///     Check Result.Code and Result.Message to get more details about possible errors
         /// </returns>
         public Result<Customer> GetCustomerbyID(int customerID)
         {
-            var customer = _dbContext.Customer
-                .Where(c => c.CustomerId == customerID)
+            var customer = Search(
+                new SearchCustomerOptions()
+                {
+                    CustomerId = customerID
+                })
                 .Include(c => c.Accounts)
                 .SingleOrDefault();
 
@@ -467,14 +461,16 @@ namespace TinyBank.Core.Services
         /// </summary>
         /// <param name="customerID">The customer Id to updated</param>
         /// <returns>
-        ///     Task<Result<Customer>>
         ///     Result.Code should be Success(200)
         ///     Check Result.Code and Result.Message to get more details about possible errors
         /// </returns>
         public async Task<Result<Customer>> GetCustomerbyIDAsync(int customerID)
         {
-            var customer = await _dbContext.Customer
-                .Where(c => c.CustomerId == customerID)
+            var customer = await Search(
+                new SearchCustomerOptions()
+                {
+                    CustomerId = customerID
+                })
                 .Include(c => c.Accounts)
                 .SingleOrDefaultAsync();
 
@@ -502,7 +498,6 @@ namespace TinyBank.Core.Services
         /// </summary>
         /// <param name="customerID">The customer Id to updated</param>
         /// <returns>
-        ///     ResultList<CustomerAccounts_V>
         ///     Result.Code should be Success(200)
         ///     Check Result.Code and Result.Message to get more details about possible errors
         /// </returns>
@@ -536,7 +531,6 @@ namespace TinyBank.Core.Services
         /// </summary>
         /// <param name="customerID">The customer Id to updated</param>
         /// <returns>
-        ///     Task<ResultList<CustomerAccounts_V>>
         ///     Result.Code should be Success(200)
         ///     Check Result.Code and Result.Message to get more details about possible errors
         /// </returns>
@@ -569,7 +563,6 @@ namespace TinyBank.Core.Services
         ///     Gets a list of all customers
         /// </summary>
         /// <returns>
-        ///     Result<List<Customer>>
         ///     Result.Code should be Success(200)
         ///     Check Result.Code and Result.Message to get more details about possible errors
         /// </returns>
@@ -600,7 +593,6 @@ namespace TinyBank.Core.Services
         ///     Gets a list of all customers with Async support
         /// </summary>
         /// <returns>
-        ///     Result<List<Customer>>
         ///     Result.Code should be Success(200)
         ///     Check Result.Code and Result.Message to get more details about possible errors
         /// </returns>
@@ -632,7 +624,7 @@ namespace TinyBank.Core.Services
         /// </summary>
         /// <param name="countryCode">The country code for whichc the VAT number is applied</param>
         /// <param name="vatNumber">The VAT number to check</param>
-        ///     Result<bool>
+        /// <returns>
         ///     Result.Code should be Success(200)
         ///     Check Result.Code and Result.Message to get more details about possible errors
         /// </returns>
@@ -681,6 +673,57 @@ namespace TinyBank.Core.Services
                 Message = "VAT Number is valid",
                 Data = true
             };
+        }
+
+        /// <summary>
+        ///     Searches for a customer given a set of search options
+        /// </summary>
+        /// <param name="options">Search option</param>
+        /// <returns>
+        ///     A customer object of IQueryable type
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     Occurs when no search options are passed
+        /// </exception>
+        public IQueryable<Customer> Search(SearchCustomerOptions options)
+        {
+            if(options==null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            var q = _dbContext.Set<Customer>()
+                .AsNoTracking()
+                .AsQueryable();
+
+            if(options.CustomerId != null)
+            {
+                q = q.Where(c => c.CustomerId == options.CustomerId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(options.VAtNumber))
+            {
+                q = q.Where(c => c.VatNumber == options.VAtNumber);
+            }
+
+            if (!string.IsNullOrWhiteSpace(options.CustBankId))
+            {
+                q = q.Where(c => c.CustBankID == options.CustBankId);
+            }
+
+            if (options.CountryCodes.Any())
+            {
+                q = q.Where(c => options.CountryCodes.Contains(c.CountryCode));
+            }
+
+            if(options.Skip != null)
+            {
+                q = q.Skip(options.Skip.Value);
+            }
+
+            q = q.Take(options.MaxResults ?? 500);
+
+            return q;
         }
         #endregion
     }

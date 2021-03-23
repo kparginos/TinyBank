@@ -175,16 +175,16 @@ namespace TinyBank.Core.Tests
         public void IsValidVatNumber_Check()
         {
             var result = _customer.IsValidVatNumber("GR", "123485679");
-            Assert.True(result);
+            Assert.True(result.Data);
 
             result = _customer.IsValidVatNumber("IT", "1234856790");
-            Assert.True(result);
+            Assert.True(result.Data);
 
             result = _customer.IsValidVatNumber("CY", "12348567901");
-            Assert.True(result);
+            Assert.True(result.Data);
 
             result = _customer.IsValidVatNumber("GB", "123485679");
-            Assert.False(result);
+            Assert.False(result.Data);
         }
 
         private DbContextOptionsBuilder<TinyBankDBContext> GetDBOptions()
