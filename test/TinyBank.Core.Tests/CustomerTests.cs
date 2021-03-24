@@ -71,22 +71,32 @@ namespace TinyBank.Core.Tests
             Assert.NotNull(customer);
         }
 
-        [Fact]
-        public void Add_New_Customer_With_DI()
+        [Theory]
+        [InlineData(Country.GreekCountryCode)]
+        [InlineData(Country.CyprusCountryCode)]
+        [InlineData(Country.ItalyCountryCode)]
+        public Customer Add_New_Customer_With_DI(string countryCode)
         {
+            var vatNumber = GenerateVat(countryCode);
+
+            Assert.NotNull(vatNumber);
+
             var options = new RegisterCustomerOptions()
             {
                 CustomerBankID = "CUSTBNK0209",
                 Name = "Iliana",
                 SureName = "Panagiotopoulou",
-                VATNumber = "076451289",
+                VATNumber = vatNumber,
                 CustType = CustomerType.Personal,
-                Address = "Aigyptou 84"
+                Address = "Aigyptou 84",
+                CountryCode = countryCode
             };
 
             var customer = _customer.Register(options);
 
-            Assert.NotNull(customer);
+            Assert.Equal(ResultCodes.Success, customer.Code);
+
+            return customer.Data;
         }
 
         [Fact]
@@ -187,6 +197,30 @@ namespace TinyBank.Core.Tests
             Assert.False(result.Data);
         }
 
+        [Fact]
+        public void SearchCustomer_Success()
+        {
+            var c1 = Add_New_Customer_With_DI(Country.GreekCountryCode);
+            Assert.NotNull(c1);
+
+            var c2 = Add_New_Customer_With_DI(Country.CyprusCountryCode);
+            Assert.NotNull(c2);
+
+            var c3 = Add_New_Customer_With_DI(Country.ItalyCountryCode);
+            Assert.NotNull(c3);
+
+            var options = new SearchCustomerOptions()
+            {
+                CountryCodes = { Country.GreekCountryCode, Country.CyprusCountryCode }
+            };
+
+            var customersFound = _customer
+                .Search(options)
+                .SingleOrDefault();
+
+            Assert.NotNull(customersFound);
+        }
+
         private DbContextOptionsBuilder<TinyBankDBContext> GetDBOptions()
         {
             var config = new ConfigurationBuilder()
@@ -205,6 +239,20 @@ namespace TinyBank.Core.Tests
                 });
 
             return options;
+        }
+        private string GenerateVat(string countryCode)
+        {
+            switch (countryCode)
+            {
+                case Country.GreekCountryCode:
+                    return $"{DateTimeOffset.Now:ssffffff}";
+                case Country.CyprusCountryCode:
+                    return $"{DateTimeOffset.Now:mmssffffff}";
+                case Country.ItalyCountryCode:
+                    return $"{DateTimeOffset.Now:mssffffff}";
+                default:
+                    return null;
+            }
         }
     }
 }
