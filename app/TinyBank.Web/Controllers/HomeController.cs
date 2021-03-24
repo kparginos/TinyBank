@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using TinyBank.WebAPI.Models;
+using TinyBank.Web.Models;
 
-namespace TinyBank.WebAPI.Controllers
+namespace TinyBank.Web.Controllers
 {
     public class HomeController : Controller
     {

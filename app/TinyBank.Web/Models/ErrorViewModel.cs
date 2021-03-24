@@ -1,6 +1,6 @@
 using System;
 
-namespace TinyBank.WebAPI.Models
+namespace TinyBank.Web.Models
 {
     public class ErrorViewModel
     {
